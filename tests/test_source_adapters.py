@@ -41,6 +41,7 @@ def test_csindex_adapter_preserves_current_and_monthly_metrics() -> None:
 
 def test_price_adapters_keep_source_rows_separate() -> None:
     from market_evidence.sources.eastmoney import EastmoneyPriceAdapter
+    from market_evidence.sources.sina import SinaPriceAdapter
     from market_evidence.sources.stooq import StooqPriceAdapter
 
     eastmoney = EastmoneyPriceAdapter().parse_payload(
@@ -51,9 +52,16 @@ def test_price_adapters_keep_source_rows_separate() -> None:
         source_target(),
         RETRIEVED_AT,
     )
+    sina = SinaPriceAdapter().parse_payload(
+        '/* public */\nvar _assetpilot=([{"day":"2026-07-14","close":"4010.25"},'
+        '{"day":"2026-07-15","close":"4020.75"}]);',
+        source_target(),
+        RETRIEVED_AT,
+    )
 
     assert [row.source_id for row in eastmoney.rows] == ["eastmoney_index_history"] * 2
     assert [row.source_id for row in stooq.rows] == ["stooq_index_history"] * 2
+    assert [row.source_id for row in sina.rows] == ["sina_index_history"] * 2
     assert eastmoney.rows[0].value != stooq.rows[0].value
 
 

@@ -71,7 +71,7 @@ class BoundedHttpClient:
         last_error: Exception | None = None
         for _attempt in range(1, self.max_attempts + 1):
             try:
-                with self.opener(request, self.timeout_seconds) as response:
+                with self.opener(request, timeout=self.timeout_seconds) as response:
                     final_url = response.geturl()
                     self._validate_url(final_url)
                     body = response.read(self.max_response_bytes + 1)
@@ -91,4 +91,3 @@ class BoundedHttpClient:
             return json.loads(self.get_bytes(url).decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError) as error:
             raise HttpFetchError(f"public endpoint returned malformed JSON: {error}") from error
-

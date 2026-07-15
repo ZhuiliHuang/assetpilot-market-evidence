@@ -13,9 +13,10 @@
 2. Run `python -m pytest -q`.
 3. Run `python scripts/audit_source_coverage.py --offline`.
 4. Build fixture evidence into a new temporary directory with `python scripts/update_market_data.py --fixtures --output <temporary-directory>`.
-5. Inspect the manifest, category packages, direction details, hashes, source URLs, file count, and total size. Delete only that verified temporary directory after acceptance.
-6. Create a public repository named `assetpilot-market-evidence` under `ZhuiliHuang`, then push the existing `main`, `data`, and `chatgpt-inbox` branches.
-7. Keep both schedules disabled. Manually run fixture publication, verify Pages, and verify the fixed Pages origin is the only remote origin used by AssetPilot.
+5. Build live public evidence into a separate temporary directory with `python scripts/update_market_data.py --output <temporary-directory>`.
+6. Inspect both manifests, category packages, direction details, hashes, source URLs, cross-validation states, gaps, file counts, and total sizes. Delete only those verified temporary directories after acceptance.
+7. Create a public repository named `assetpilot-market-evidence` under `ZhuiliHuang`, then push the existing `main`, `data`, and `chatgpt-inbox` branches.
+8. Keep both schedules disabled. Manually run live publication, verify Pages, and verify the fixed Pages origin is the only remote origin used by AssetPilot.
 
 ## Numeric publication gate
 

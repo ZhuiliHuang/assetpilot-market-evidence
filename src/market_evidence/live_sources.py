@@ -109,6 +109,7 @@ def fetch_live_source_results(
         timeout_seconds=15,
         max_attempts=2,
         max_response_bytes=5_000_000,
+        retry_delay_seconds=12,
     )))()
     results: list[SourceResult] = []
 

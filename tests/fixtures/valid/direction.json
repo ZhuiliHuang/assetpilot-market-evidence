@@ -32,6 +32,18 @@
       {"date": "2026-07-15", "value": 35.2, "missing_reason": null}
     ]
   },
+  "chart": {
+    "reference_bands": [20, 50, 80],
+    "current_point": {"date": "2026-07-15", "value": 35.2, "missing_reason": null},
+    "downsampled": false
+  },
+  "quality": {
+    "adopted_source_id": "official_fixture",
+    "cross_validation": "confirmed",
+    "conflicts": [],
+    "attempted_source_ids": ["official_fixture"],
+    "freshness": "fresh"
+  },
   "source_evidence": [
     {
       "source_id": "official_fixture",
@@ -50,4 +62,3 @@
     "calculated_at": "2026-07-15T12:30:00Z"
   }
 }
-

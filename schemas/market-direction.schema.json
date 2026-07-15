@@ -17,6 +17,8 @@
     "valuation_applicable",
     "metrics",
     "series",
+    "chart",
+    "quality",
     "source_evidence",
     "gaps",
     "calculation"
@@ -67,6 +69,37 @@
           "type": "array",
           "items": {"$ref": "#/$defs/seriesPoint"}
         }
+      }
+    },
+    "chart": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reference_bands", "current_point", "downsampled"],
+      "properties": {
+        "reference_bands": {
+          "type": "array",
+          "prefixItems": [{"const": 20}, {"const": 50}, {"const": 80}],
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "current_point": {"$ref": "#/$defs/currentPoint"},
+        "downsampled": {"type": "boolean"}
+      }
+    },
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adopted_source_id", "cross_validation", "conflicts", "attempted_source_ids", "freshness"],
+      "properties": {
+        "adopted_source_id": {"type": ["string", "null"], "pattern": "^[a-z0-9_]+$"},
+        "cross_validation": {"enum": ["confirmed", "partial", "conflict", "unavailable"]},
+        "conflicts": {"type": "array", "items": {"type": "string", "minLength": 1, "maxLength": 300}},
+        "attempted_source_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^[a-z0-9_]+$"}
+        },
+        "freshness": {"enum": ["fresh", "degraded", "stale"]}
       }
     },
     "source_evidence": {
@@ -153,6 +186,30 @@
           "required": ["date", "value", "missing_reason"],
           "properties": {
             "date": {"type": "string", "format": "date"},
+            "value": {"type": "null"},
+            "missing_reason": {"type": "string", "minLength": 1, "maxLength": 300}
+          }
+        }
+      ]
+    },
+    "currentPoint": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["date", "value", "missing_reason"],
+          "properties": {
+            "date": {"type": "string", "format": "date"},
+            "value": {"type": "number", "minimum": 0, "maximum": 100},
+            "missing_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["date", "value", "missing_reason"],
+          "properties": {
+            "date": {"type": ["string", "null"], "format": "date"},
             "value": {"type": "null"},
             "missing_reason": {"type": "string", "minLength": 1, "maxLength": 300}
           }

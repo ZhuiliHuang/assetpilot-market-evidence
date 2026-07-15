@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assetpilot.example/schemas/market-analysis-candidate.schema.json",
+  "title": "Untrusted market analysis candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "candidate_version",
+    "evidence_version",
+    "evidence_manifest_sha256",
+    "analysis_date",
+    "generated_at",
+    "focus_opportunities",
+    "risks",
+    "overall_limitations"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "candidate_version": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[a-f0-9]{8,16}$"},
+    "evidence_version": {"type": "string", "minLength": 1},
+    "evidence_manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "analysis_date": {"type": "string", "format": "date"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "focus_opportunities": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/focusItem"}
+    },
+    "risks": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "items": {"$ref": "#/$defs/riskItem"}
+    },
+    "overall_limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/nonNumericText"}
+    }
+  },
+  "$defs": {
+    "nonNumericText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "pattern": "^[^0-9０-９%％]*$"
+    },
+    "evidenceReference": {
+      "type": "string",
+      "pattern": "^directions/[a-z0-9_]+#/(metrics|series|source_evidence|gaps)/[A-Za-z0-9_./-]+$"
+    },
+    "focusItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "direction_id",
+        "thesis",
+        "supporting_evidence_refs",
+        "counter_evidence_refs",
+        "invalidation_conditions",
+        "research_action",
+        "limitations"
+      ],
+      "properties": {
+        "direction_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "thesis": {"$ref": "#/$defs/nonNumericText"},
+        "supporting_evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/evidenceReference"}
+        },
+        "counter_evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/evidenceReference"}
+        },
+        "invalidation_conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/nonNumericText"}
+        },
+        "research_action": {
+          "enum": ["observe", "compare_public_evidence", "wait_for_confirmation", "review_source_conflict"]
+        },
+        "limitations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/nonNumericText"}
+        }
+      }
+    },
+    "riskItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["direction_id", "risk_type", "summary", "evidence_refs", "invalidation_conditions"],
+      "properties": {
+        "direction_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "risk_type": {"enum": ["overvaluation", "crowding", "deterioration", "source_conflict"]},
+        "summary": {"$ref": "#/$defs/nonNumericText"},
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/evidenceReference"}
+        },
+        "invalidation_conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/nonNumericText"}
+        }
+      }
+    }
+  }
+}
+

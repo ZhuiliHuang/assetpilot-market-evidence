@@ -1,0 +1,53 @@
+{
+  "_schema": "market-direction",
+  "schema_version": "1.0.0",
+  "registry_version": "2026-07-15.1",
+  "evidence_version": "2026-07-15.aaaaaaaa",
+  "direction_id": "hs300",
+  "category_id": "broad_style",
+  "display_name": "沪深300",
+  "data_as_of": "2026-07-15",
+  "status": "ready",
+  "proxy": {
+    "definition": "经来源审计锁定的沪深大盘核心资产代理",
+    "code": "VERIFIED_CODE",
+    "publisher": "Verified public index publisher",
+    "currency": "CNY",
+    "calendar": "XSHG_XSHE"
+  },
+  "valuation_applicable": true,
+  "metrics": {
+    "current_percentile": {"value": 35.2, "missing_reason": null},
+    "five_year_percentile": {"value": 41.8, "missing_reason": null},
+    "all_history_percentile": {"value": 38.6, "missing_reason": null}
+  },
+  "series": {
+    "metric": "valuation_percentile",
+    "unit": "percentile",
+    "start_date": "2026-07-14",
+    "end_date": "2026-07-15",
+    "sample_count": 2,
+    "points": [
+      {"date": "2026-07-14", "value": 34.8, "missing_reason": null},
+      {"date": "2026-07-15", "value": 35.2, "missing_reason": null}
+    ]
+  },
+  "source_evidence": [
+    {
+      "source_id": "official_fixture",
+      "role": "adopted",
+      "as_of": "2026-07-15",
+      "url": "https://example.com/public-index",
+      "cross_validation": "confirmed",
+      "last_attempt": "2026-07-15T12:25:00Z"
+    }
+  ],
+  "gaps": [],
+  "calculation": {
+    "method": "empirical_cdf_midrank",
+    "metric_definition": "公开估值序列的经验分布中位秩百分位",
+    "software_version": "0.1.0",
+    "calculated_at": "2026-07-15T12:30:00Z"
+  }
+}
+

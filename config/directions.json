@@ -1,0 +1,274 @@
+{
+  "schema_version": "1.0.0",
+  "registry_version": "2026-07-15.1",
+  "categories": [
+    {
+      "id": "broad_style",
+      "display_name": "宽基/风格",
+      "display_order": 1,
+      "directions": [
+        {
+          "id": "hs300",
+          "display_name": "沪深300",
+          "category_id": "broad_style",
+          "display_order": 1,
+          "level": 1,
+          "proxy_definition": "沪深两市大盘核心资产宽基代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "CNY",
+          "calendar": "XSHG_XSHE",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
+        },
+        {
+          "id": "csi500",
+          "display_name": "中证500",
+          "category_id": "broad_style",
+          "display_order": 2,
+          "level": 1,
+          "proxy_definition": "A股中盘风格宽基代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "CNY",
+          "calendar": "XSHG_XSHE",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
+        },
+        {
+          "id": "csi1000",
+          "display_name": "中证1000",
+          "category_id": "broad_style",
+          "display_order": 3,
+          "level": 1,
+          "proxy_definition": "A股小盘风格宽基代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "CNY",
+          "calendar": "XSHG_XSHE",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
+        },
+        {
+          "id": "gem",
+          "display_name": "创业板",
+          "category_id": "broad_style",
+          "display_order": 4,
+          "level": 1,
+          "proxy_definition": "深市创新成长企业风格代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "CNY",
+          "calendar": "XSHG_XSHE",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
+        },
+        {
+          "id": "star50",
+          "display_name": "科创50",
+          "category_id": "broad_style",
+          "display_order": 5,
+          "level": 1,
+          "proxy_definition": "科创板龙头科技企业风格代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "CNY",
+          "calendar": "XSHG_XSHE",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
+        },
+        {
+          "id": "dividend",
+          "display_name": "红利",
+          "category_id": "broad_style",
+          "display_order": 6,
+          "level": 1,
+          "proxy_definition": "A股高股息与分红持续性风格代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "CNY",
+          "calendar": "XSHG_XSHE",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
+        }
+      ]
+    },
+    {
+      "id": "industry",
+      "display_name": "行业",
+      "display_order": 2,
+      "directions": [
+        {
+          "id": "information",
+          "display_name": "信息科技",
+          "category_id": "industry",
+          "display_order": 1,
+          "level": 1,
+          "proxy_definition": "A股信息技术行业综合代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "CNY",
+          "calendar": "XSHG_XSHE",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {
+            "mode": "on_demand",
+            "child_direction_ids": ["semiconductor", "computer", "communication", "electronics"]
+          }
+        },
+        {
+          "id": "defense",
+          "display_name": "军工",
+          "category_id": "industry",
+          "display_order": 2,
+          "level": 1,
+          "proxy_definition": "A股国防军工产业综合代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "CNY",
+          "calendar": "XSHG_XSHE",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {
+            "mode": "on_demand",
+            "child_direction_ids": ["aviation", "aerospace", "shipbuilding", "defense_electronics"]
+          }
+        },
+        {
+          "id": "healthcare",
+          "display_name": "医疗",
+          "category_id": "industry",
+          "display_order": 3,
+          "level": 1,
+          "proxy_definition": "A股医药卫生与医疗服务综合代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "CNY",
+          "calendar": "XSHG_XSHE",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {
+            "mode": "on_demand",
+            "child_direction_ids": ["pharmaceuticals", "medical_devices", "medical_services", "traditional_chinese_medicine"]
+          }
+        },
+        {
+          "id": "consumer",
+          "display_name": "消费",
+          "category_id": "industry",
+          "display_order": 4,
+          "level": 1,
+          "proxy_definition": "A股主要消费与可选消费综合代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "CNY",
+          "calendar": "XSHG_XSHE",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {
+            "mode": "on_demand",
+            "child_direction_ids": ["food_beverage", "home_appliances", "automobile", "agriculture"]
+          }
+        },
+        {
+          "id": "finance",
+          "display_name": "金融",
+          "category_id": "industry",
+          "display_order": 5,
+          "level": 1,
+          "proxy_definition": "A股银行、非银与地产金融链综合代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "CNY",
+          "calendar": "XSHG_XSHE",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {
+            "mode": "on_demand",
+            "child_direction_ids": ["banks", "brokers", "insurance", "real_estate"]
+          }
+        },
+        {
+          "id": "cyclical_resources",
+          "display_name": "周期资源",
+          "category_id": "industry",
+          "display_order": 6,
+          "level": 1,
+          "proxy_definition": "A股上游资源与传统周期行业综合代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "CNY",
+          "calendar": "XSHG_XSHE",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {
+            "mode": "on_demand",
+            "child_direction_ids": ["nonferrous_metals", "coal", "chemicals", "steel"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "hong_kong",
+      "display_name": "港股",
+      "display_order": 3,
+      "directions": [
+        {
+          "id": "hsi",
+          "display_name": "恒生指数",
+          "category_id": "hong_kong",
+          "display_order": 1,
+          "level": 1,
+          "proxy_definition": "香港大盘蓝筹市场综合代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "HKD",
+          "calendar": "XHKG",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
+        },
+        {
+          "id": "hstech",
+          "display_name": "恒生科技",
+          "category_id": "hong_kong",
+          "display_order": 2,
+          "level": 1,
+          "proxy_definition": "香港上市科技龙头综合代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "HKD",
+          "calendar": "XHKG",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {
+            "mode": "on_demand",
+            "child_direction_ids": ["internet_platforms", "hardware", "biotech"]
+          }
+        },
+        {
+          "id": "hk_dividend",
+          "display_name": "港股红利",
+          "category_id": "hong_kong",
+          "display_order": 3,
+          "level": 1,
+          "proxy_definition": "香港上市高股息与分红持续性风格代表",
+          "primary_proxy_code": null,
+          "publisher": null,
+          "currency": "HKD",
+          "calendar": "XHKG",
+          "valuation_applicable": true,
+          "source_audit_status": "pending",
+          "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
+        }
+      ]
+    }
+  ]
+}
+

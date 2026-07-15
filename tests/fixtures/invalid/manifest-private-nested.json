@@ -1,0 +1,19 @@
+{
+  "_schema": "market-data-manifest",
+  "schema_version": "1.0.0",
+  "registry_version": "2026-07-15.1",
+  "evidence_version": "2026-07-15.aaaaaaaa",
+  "generated_at": "2026-07-15T12:30:00Z",
+  "data_as_of": "2026-07-15",
+  "categories": [],
+  "analysis": null,
+  "degraded_sources": [
+    {
+      "source_id": "fixture",
+      "failed_at": "2026-07-15T12:00:00Z",
+      "last_successful_date": "2026-07-14",
+      "impact": "fixture",
+      "account_id": "private"
+    }
+  ]
+}

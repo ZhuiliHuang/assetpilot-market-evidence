@@ -1,0 +1,24 @@
+{
+  "_schema": "market-category",
+  "schema_version": "1.0.0",
+  "registry_version": "2026-07-15.1",
+  "evidence_version": "2026-07-15.aaaaaaaa",
+  "category_id": "broad_style",
+  "display_name": "宽基/风格",
+  "data_as_of": "2026-07-15",
+  "summary": "缺失值不得伪装成零。",
+  "directions": [
+    {
+      "direction_id": "hs300",
+      "display_name": "沪深300",
+      "status": "missing",
+      "current_percentile": {"value": null, "missing_reason": null},
+      "five_year_percentile": {"value": null, "missing_reason": "公开历史不足"},
+      "all_history_percentile": {"value": null, "missing_reason": "公开历史不足"},
+      "sample_count": 0,
+      "detail_path": "versions/2026-07-15.aaaaaaaa/directions/hs300.json",
+      "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    }
+  ]
+}
+

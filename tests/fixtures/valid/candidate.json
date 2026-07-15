@@ -1,0 +1,40 @@
+{
+  "_schema": "market-analysis-candidate",
+  "schema_version": "1.0.0",
+  "candidate_version": "2026-07-15.aaaaaaaa",
+  "evidence_version": "2026-07-15.aaaaaaaa",
+  "evidence_manifest_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "analysis_date": "2026-07-15",
+  "generated_at": "2026-07-15T14:00:00Z",
+  "focus_opportunities": [
+    {
+      "direction_id": "hs300",
+      "thesis": "估值位置与来源一致性支持继续观察",
+      "supporting_evidence_refs": ["directions/hs300#/metrics/current_percentile/value"],
+      "counter_evidence_refs": ["directions/hs300#/series/points/latest"],
+      "invalidation_conditions": ["来源交叉验证转为冲突"],
+      "research_action": "compare_public_evidence",
+      "limitations": ["公开估值不能替代企业质量研究"]
+    },
+    {
+      "direction_id": "hstech",
+      "thesis": "趋势企稳迹象值得等待更多公开证据",
+      "supporting_evidence_refs": ["directions/hstech#/series/points/latest"],
+      "counter_evidence_refs": ["directions/hstech#/gaps/latest/decision_impact"],
+      "invalidation_conditions": ["数据缺口扩大并影响趋势判断"],
+      "research_action": "wait_for_confirmation",
+      "limitations": ["跨市场汇率与制度差异仍需单独评估"]
+    }
+  ],
+  "risks": [
+    {
+      "direction_id": "star50",
+      "risk_type": "crowding",
+      "summary": "拥挤度证据需要持续交叉核验",
+      "evidence_refs": ["directions/star50#/source_evidence/latest/cross_validation"],
+      "invalidation_conditions": ["多来源一致显示拥挤缓解"]
+    }
+  ],
+  "overall_limitations": ["结论仅基于公开证据且不包含个人持仓"]
+}
+

@@ -1,0 +1,24 @@
+{
+  "_schema": "market-category",
+  "schema_version": "1.0.0",
+  "registry_version": "2026-07-15.1",
+  "evidence_version": "2026-07-15.aaaaaaaa",
+  "category_id": "broad_style",
+  "display_name": "宽基/风格",
+  "data_as_of": "2026-07-15",
+  "summary": "分位用于比较当前公开估值与自身历史，不代表收益承诺。",
+  "directions": [
+    {
+      "direction_id": "hs300",
+      "display_name": "沪深300",
+      "status": "ready",
+      "current_percentile": {"value": 35.2, "missing_reason": null},
+      "five_year_percentile": {"value": 41.8, "missing_reason": null},
+      "all_history_percentile": {"value": 38.6, "missing_reason": null},
+      "sample_count": 1200,
+      "detail_path": "versions/2026-07-15.aaaaaaaa/directions/hs300.json",
+      "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    }
+  ]
+}
+

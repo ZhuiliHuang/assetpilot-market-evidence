@@ -1,0 +1,14 @@
+{
+  "_schema": "market-analysis-candidate",
+  "schema_version": "1.0.0",
+  "candidate_version": "2026-07-15.aaaaaaaa",
+  "evidence_version": "2026-07-15.aaaaaaaa",
+  "evidence_manifest_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "analysis_date": "2026-07-15",
+  "generated_at": "2026-07-15T14:00:00Z",
+  "current_percentile": 12.3,
+  "focus_opportunities": [],
+  "risks": [],
+  "overall_limitations": ["不得直接写入模型生成的数字"]
+}
+

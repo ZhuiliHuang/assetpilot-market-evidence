@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assetpilot.example/schemas/market-category.schema.json",
+  "title": "Market category package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "registry_version",
+    "evidence_version",
+    "category_id",
+    "display_name",
+    "data_as_of",
+    "summary",
+    "directions"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "registry_version": {"type": "string", "minLength": 1},
+    "evidence_version": {"type": "string", "minLength": 1},
+    "category_id": {"enum": ["broad_style", "industry", "hong_kong"]},
+    "display_name": {"type": "string", "minLength": 1, "maxLength": 40},
+    "data_as_of": {"type": "string", "format": "date"},
+    "summary": {"type": "string", "minLength": 1, "maxLength": 300},
+    "directions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "direction_id",
+          "display_name",
+          "status",
+          "current_percentile",
+          "five_year_percentile",
+          "all_history_percentile",
+          "sample_count",
+          "detail_path",
+          "sha256"
+        ],
+        "properties": {
+          "direction_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "display_name": {"type": "string", "minLength": 1, "maxLength": 40},
+          "status": {"enum": ["ready", "degraded", "missing"]},
+          "current_percentile": {"$ref": "#/$defs/percentileMetric"},
+          "five_year_percentile": {"$ref": "#/$defs/percentileMetric"},
+          "all_history_percentile": {"$ref": "#/$defs/percentileMetric"},
+          "sample_count": {"type": "integer", "minimum": 0},
+          "detail_path": {"type": "string", "pattern": "^versions/[A-Za-z0-9._-]+/directions/[a-z0-9_]+\\.json$"},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "percentileMetric": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "missing_reason"],
+          "properties": {
+            "value": {"type": "number", "minimum": 0, "maximum": 100},
+            "missing_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "missing_reason"],
+          "properties": {
+            "value": {"type": "null"},
+            "missing_reason": {"type": "string", "minLength": 1, "maxLength": 300}
+          }
+        }
+      ]
+    }
+  }
+}

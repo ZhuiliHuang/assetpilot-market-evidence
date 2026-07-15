@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assetpilot.example/schemas/market-data-manifest.schema.json",
+  "title": "Market data manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "registry_version",
+    "evidence_version",
+    "generated_at",
+    "data_as_of",
+    "categories",
+    "analysis",
+    "degraded_sources"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "registry_version": {"type": "string", "minLength": 1},
+    "evidence_version": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[a-f0-9]{8,16}$"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "data_as_of": {"type": "string", "format": "date"},
+    "categories": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["category_id", "package_path", "sha256"],
+        "properties": {
+          "category_id": {"enum": ["broad_style", "industry", "hong_kong"]},
+          "package_path": {"type": "string", "pattern": "^versions/[A-Za-z0-9._-]+/categories/[a-z_]+\\.json$"},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        }
+      }
+    },
+    "analysis": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["analysis_as_of", "package_path", "sha256", "evidence_version"],
+          "properties": {
+            "analysis_as_of": {"type": "string", "format": "date"},
+            "package_path": {"type": "string", "pattern": "^versions/[A-Za-z0-9._-]+/market-analysis\\.json$"},
+            "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "evidence_version": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
+    "degraded_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "failed_at", "last_successful_date", "impact"],
+        "properties": {
+          "source_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "failed_at": {"type": "string", "format": "date-time"},
+          "last_successful_date": {"type": ["string", "null"], "format": "date"},
+          "impact": {"type": "string", "minLength": 1, "maxLength": 300}
+        }
+      }
+    }
+  }
+}
+

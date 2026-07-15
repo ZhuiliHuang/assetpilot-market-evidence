@@ -114,3 +114,28 @@ def test_http_client_bounds_retries_and_response_size() -> None:
     )
     with pytest.raises(HttpSafetyError, match="size"):
         size_client.get_json("https://data.example.com/value")
+
+
+def test_http_client_waits_between_failed_attempts_without_exposing_request_data() -> None:
+    from market_evidence.http_client import BoundedHttpClient
+
+    attempts = 0
+    waits: list[float] = []
+
+    def flaky_opener(_request: object, timeout: float) -> FakeResponse:
+        nonlocal attempts
+        attempts += 1
+        if attempts == 1:
+            raise URLError("temporary")
+        return FakeResponse(b"{}", "https://data.example.com/value")
+
+    client = BoundedHttpClient(
+        allowed_hosts={"data.example.com"},
+        max_attempts=2,
+        retry_delay_seconds=12,
+        sleeper=waits.append,
+        opener=flaky_opener,
+    )
+
+    assert client.get_json("https://data.example.com/value") == {}
+    assert waits == [12]

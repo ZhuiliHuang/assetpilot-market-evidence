@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import shutil
 import tempfile
+import time
 from datetime import date, datetime, timezone
 from decimal import Decimal
 from pathlib import Path
@@ -20,6 +22,8 @@ from market_evidence.sources.base import Observation, SourceResult
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_LIVE_DIRECTION_DELAY_SECONDS = 12
+_SAFE_ERROR_TYPE = re.compile(r"^[A-Za-z][A-Za-z0-9_]{0,79}$")
 
 
 def month_sequence(end_date: date, count: int) -> list[date]:
@@ -87,6 +91,22 @@ def write_json(path: Path, value: Any) -> None:
     path.write_bytes(canonical_json_bytes(value) + b"\n")
 
 
+def print_source_diagnostics(direction_id: str, results: list[SourceResult]) -> None:
+    """Print bounded operational metadata without URLs, messages, or credentials."""
+    for result in results:
+        error_type = None
+        if result.errors:
+            candidate = result.errors[0].split(":", 1)[0]
+            error_type = candidate if _SAFE_ERROR_TYPE.fullmatch(candidate) else "SourceError"
+        print(json.dumps({
+            "direction_id": direction_id,
+            "source_id": result.source_id,
+            "status": result.status,
+            "row_count": len(result.rows),
+            "error_type": error_type,
+        }, ensure_ascii=True, separators=(",", ":")))
+
+
 def previous_direction_summaries(root: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]:
     manifest = load_json(root / "manifest.json")
     summaries: dict[str, dict[str, Any]] = {}
@@ -140,7 +160,11 @@ def write_built_tree(
                 "source_id": f"{direction_id}_public_source_chain",
                 "failed_at": now.isoformat().replace("+00:00", "Z"),
                 "last_successful_date": last_date,
-                "impact": "retained the last validated direction package; current evidence is degraded",
+                "impact": (
+                    "retained the last validated direction package; current evidence is degraded"
+                    if direction_id in previous_summaries
+                    else "no previous validated direction package is available"
+                ),
             }
             for direction_id in sorted(failed_direction_ids)
         ]
@@ -166,6 +190,7 @@ def update_public_tree(
     failed_direction_ids: set[str] | None = None,
     total_failure: bool = False,
     source_loader: Callable[[dict[str, Any], date, date, datetime], list[SourceResult]] | None = None,
+    sleeper: Callable[[float], None] = time.sleep,
 ) -> bool:
     if total_failure:
         return False
@@ -182,13 +207,17 @@ def update_public_tree(
             direction["id"]: fixture_source_results(direction, now) for direction in directions
         }
     else:
+        use_default_live_loader = source_loader is None
         loader = source_loader or fetch_live_source_results
         start_date = date(now.year - 10, now.month, min(now.day, 28))
         end_date = now.date()
-        source_results_by_direction = {
-            direction["id"]: loader(direction, start_date, end_date, now)
-            for direction in directions
-        }
+        source_results_by_direction = {}
+        for index, direction in enumerate(directions):
+            results = loader(direction, start_date, end_date, now)
+            source_results_by_direction[direction["id"]] = results
+            print_source_diagnostics(direction["id"], results)
+            if use_default_live_loader and index < len(directions) - 1:
+                sleeper(DEFAULT_LIVE_DIRECTION_DELAY_SECONDS)
         live_failures = {
             direction["id"]
             for direction in directions

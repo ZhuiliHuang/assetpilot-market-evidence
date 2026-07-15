@@ -18,12 +18,18 @@ This public repository builds deterministic, versioned market-evidence packages 
 
 Scheduled collection and ChatGPT review remain disabled until end-to-end acceptance is complete.
 
+## Intended public endpoints
+
+- Repository: `https://github.com/ZhuiliHuang/assetpilot-market-evidence`
+- GitHub Pages: `https://zhuilihuang.github.io/assetpilot-market-evidence/`
+
+These endpoints are recorded for client allow-listing but are not considered live until the repository is created, the fixture publication is inspected, and the end-to-end checklist in [`docs/operations-runbook.md`](docs/operations-runbook.md) passes.
+
+The ChatGPT scheduled task must use the exact reusable prompt in [`docs/chatgpt-scheduled-task-prompt.md`](docs/chatgpt-scheduled-task-prompt.md). Keep the task paused until its first manual candidate is accepted and published without changing the last valid package on a failure drill.
+
 ## Local checks
 
 ```powershell
 python -m pip install -e ".[dev]"
 python -m pytest -q
 ```
-
-The canonical repository and GitHub Pages URLs will be recorded here after the public repository is created and validated.
-

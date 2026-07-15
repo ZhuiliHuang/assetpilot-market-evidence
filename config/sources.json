@@ -1,0 +1,237 @@
+{
+  "schema_version": "1.0.0",
+  "audit_version": "2026-07-15.1",
+  "audited_at": "2026-07-15",
+  "sources": [
+    {
+      "id": "csindex_official_factsheets",
+      "kind": "official_metadata",
+      "provider": "China Securities Index Co., Ltd.",
+      "homepage_url": "https://www.csindex.com.cn/",
+      "terms_url": "https://www.csindex.com.cn/zh-CN/about/legal-notice",
+      "redistribution_policy": "link_only",
+      "timeout_seconds": 15,
+      "max_attempts": 2,
+      "enabled": true,
+      "notes": "Official names, codes, methodology and current factsheet metadata. Raw files are linked, not republished."
+    },
+    {
+      "id": "szse_official_index_pages",
+      "kind": "official_metadata",
+      "provider": "Shenzhen Stock Exchange",
+      "homepage_url": "https://www.szse.cn/market/product/index/",
+      "terms_url": "https://www.szse.cn/aboutus/site/claimer/",
+      "redistribution_policy": "link_only",
+      "timeout_seconds": 15,
+      "max_attempts": 2,
+      "enabled": true,
+      "notes": "Official ChiNext index identity and methodology only."
+    },
+    {
+      "id": "hsi_official_index_pages",
+      "kind": "official_metadata",
+      "provider": "Hang Seng Indexes Company Limited",
+      "homepage_url": "https://www.hsi.com.hk/eng/indexes/all-indexes",
+      "terms_url": "https://www.hsi.com.hk/eng/legal-information",
+      "redistribution_policy": "link_only",
+      "timeout_seconds": 15,
+      "max_attempts": 2,
+      "enabled": true,
+      "notes": "Official identities, factsheets and methodology links. Full downloads may require an Index360 account."
+    },
+    {
+      "id": "akshare_csindex_valuation",
+      "kind": "market_data",
+      "provider": "AKShare open-source adapter with public CSI endpoints",
+      "homepage_url": "https://akshare.akfamily.xyz/data/stock/stock.html",
+      "terms_url": "https://github.com/akfamily/akshare/blob/master/LICENSE",
+      "redistribution_policy": "publish_derived_only",
+      "timeout_seconds": 20,
+      "max_attempts": 2,
+      "enabled": true,
+      "notes": "Fetch in memory; publish only deterministic percentile outputs and provenance, never raw valuation rows."
+    },
+    {
+      "id": "akshare_index_history",
+      "kind": "market_data",
+      "provider": "AKShare open-source adapter with public market endpoints",
+      "homepage_url": "https://akshare.akfamily.xyz/data/index/index.html",
+      "terms_url": "https://github.com/akfamily/akshare/blob/master/LICENSE",
+      "redistribution_policy": "publish_derived_only",
+      "timeout_seconds": 20,
+      "max_attempts": 2,
+      "enabled": true,
+      "notes": "Fallback price history. Underlying endpoint and publisher attribution remain attached to every run."
+    },
+    {
+      "id": "eastmoney_index_history",
+      "kind": "market_data",
+      "provider": "Eastmoney public market endpoint",
+      "homepage_url": "https://quote.eastmoney.com/center/",
+      "terms_url": "https://about.eastmoney.com/home/conceal",
+      "redistribution_policy": "publish_derived_only",
+      "timeout_seconds": 15,
+      "max_attempts": 2,
+      "enabled": true,
+      "notes": "Independent adapter fallback; no raw response is stored or published."
+    },
+    {
+      "id": "sina_index_history",
+      "kind": "market_data",
+      "provider": "Sina Finance public market endpoint",
+      "homepage_url": "https://finance.sina.com.cn/realstock/",
+      "terms_url": "https://corp.sina.com.cn/chn/sina_priv.html",
+      "redistribution_policy": "publish_derived_only",
+      "timeout_seconds": 15,
+      "max_attempts": 2,
+      "enabled": true,
+      "notes": "Secondary price-history cross-check; no raw response is committed."
+    },
+    {
+      "id": "akshare_hk_index_history",
+      "kind": "market_data",
+      "provider": "AKShare open-source adapter with public Hong Kong market endpoints",
+      "homepage_url": "https://akshare.akfamily.xyz/data/index/index.html",
+      "terms_url": "https://github.com/akfamily/akshare/blob/master/LICENSE",
+      "redistribution_policy": "publish_derived_only",
+      "timeout_seconds": 20,
+      "max_attempts": 2,
+      "enabled": true,
+      "notes": "Hong Kong index history adapter; exact upstream identity is logged at runtime."
+    },
+    {
+      "id": "stooq_index_history",
+      "kind": "market_data",
+      "provider": "Stooq public historical data service",
+      "homepage_url": "https://stooq.com/q/d/",
+      "terms_url": "https://stooq.com/terms.html",
+      "redistribution_policy": "publish_derived_only",
+      "timeout_seconds": 20,
+      "max_attempts": 2,
+      "enabled": true,
+      "notes": "Used only when symbol coverage is positively probed; raw downloads are not republished."
+    }
+  ],
+  "direction_sources": [
+    {
+      "direction_id": "hs300",
+      "primary_proxy_code": "000300",
+      "official_source_id": "csindex_official_factsheets",
+      "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000300factsheet.pdf",
+      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "coverage_status": "probe_required"
+    },
+    {
+      "direction_id": "csi500",
+      "primary_proxy_code": "000905",
+      "official_source_id": "csindex_official_factsheets",
+      "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000905factsheet.pdf",
+      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "coverage_status": "probe_required"
+    },
+    {
+      "direction_id": "csi1000",
+      "primary_proxy_code": "000852",
+      "official_source_id": "csindex_official_factsheets",
+      "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000852factsheet.pdf",
+      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "coverage_status": "probe_required"
+    },
+    {
+      "direction_id": "gem",
+      "primary_proxy_code": "399006",
+      "official_source_id": "szse_official_index_pages",
+      "official_url": "https://www.szse.cn/market/product/index/index.html?code=399006",
+      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "coverage_status": "probe_required"
+    },
+    {
+      "direction_id": "star50",
+      "primary_proxy_code": "000688",
+      "official_source_id": "csindex_official_factsheets",
+      "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000688factsheet.pdf",
+      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "coverage_status": "probe_required"
+    },
+    {
+      "direction_id": "dividend",
+      "primary_proxy_code": "000922",
+      "official_source_id": "csindex_official_factsheets",
+      "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000922factsheet.pdf",
+      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "coverage_status": "probe_required"
+    },
+    {
+      "direction_id": "information",
+      "primary_proxy_code": "000993",
+      "official_source_id": "csindex_official_factsheets",
+      "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000993factsheet.pdf",
+      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "coverage_status": "probe_required"
+    },
+    {
+      "direction_id": "defense",
+      "primary_proxy_code": "399967",
+      "official_source_id": "csindex_official_factsheets",
+      "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/399967factsheet.pdf",
+      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "coverage_status": "probe_required"
+    },
+    {
+      "direction_id": "healthcare",
+      "primary_proxy_code": "000991",
+      "official_source_id": "csindex_official_factsheets",
+      "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000991factsheet.pdf",
+      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "coverage_status": "probe_required"
+    },
+    {
+      "direction_id": "consumer",
+      "primary_proxy_code": "000990",
+      "official_source_id": "csindex_official_factsheets",
+      "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000990factsheet.pdf",
+      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "coverage_status": "probe_required"
+    },
+    {
+      "direction_id": "finance",
+      "primary_proxy_code": "932075",
+      "official_source_id": "csindex_official_factsheets",
+      "official_url": "https://www.csindex.com.cn/zh-CN/indices/index-detail/932075",
+      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "coverage_status": "probe_required"
+    },
+    {
+      "direction_id": "cyclical_resources",
+      "primary_proxy_code": "000961",
+      "official_source_id": "csindex_official_factsheets",
+      "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000961factsheet.pdf",
+      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "coverage_status": "probe_required"
+    },
+    {
+      "direction_id": "hsi",
+      "primary_proxy_code": "HSI",
+      "official_source_id": "hsi_official_index_pages",
+      "official_url": "https://www.hsi.com.hk/eng/indexes/all-indexes/hsi",
+      "data_source_chain": ["akshare_hk_index_history", "eastmoney_index_history", "stooq_index_history"],
+      "coverage_status": "probe_required"
+    },
+    {
+      "direction_id": "hstech",
+      "primary_proxy_code": "HSTECH",
+      "official_source_id": "hsi_official_index_pages",
+      "official_url": "https://www.hsi.com.hk/eng/indexes/all-indexes/hstech",
+      "data_source_chain": ["akshare_hk_index_history", "eastmoney_index_history", "stooq_index_history"],
+      "coverage_status": "probe_required"
+    },
+    {
+      "direction_id": "hk_dividend",
+      "primary_proxy_code": "HSHDYI",
+      "official_source_id": "hsi_official_index_pages",
+      "official_url": "https://www.hsi.com.hk/eng/indexes/all-indexes/hshdyi",
+      "data_source_chain": ["akshare_hk_index_history", "eastmoney_index_history", "stooq_index_history"],
+      "coverage_status": "probe_required"
+    }
+  ]
+}

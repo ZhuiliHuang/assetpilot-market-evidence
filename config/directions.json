@@ -14,12 +14,12 @@
           "display_order": 1,
           "level": 1,
           "proxy_definition": "沪深两市大盘核心资产宽基代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "000300",
+          "publisher": "China Securities Index Co., Ltd.",
           "currency": "CNY",
           "calendar": "XSHG_XSHE",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
         },
         {
@@ -29,12 +29,12 @@
           "display_order": 2,
           "level": 1,
           "proxy_definition": "A股中盘风格宽基代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "000905",
+          "publisher": "China Securities Index Co., Ltd.",
           "currency": "CNY",
           "calendar": "XSHG_XSHE",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
         },
         {
@@ -44,12 +44,12 @@
           "display_order": 3,
           "level": 1,
           "proxy_definition": "A股小盘风格宽基代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "000852",
+          "publisher": "China Securities Index Co., Ltd.",
           "currency": "CNY",
           "calendar": "XSHG_XSHE",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
         },
         {
@@ -59,12 +59,12 @@
           "display_order": 4,
           "level": 1,
           "proxy_definition": "深市创新成长企业风格代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "399006",
+          "publisher": "Shenzhen Securities Information Co., Ltd.",
           "currency": "CNY",
           "calendar": "XSHG_XSHE",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
         },
         {
@@ -74,12 +74,12 @@
           "display_order": 5,
           "level": 1,
           "proxy_definition": "科创板龙头科技企业风格代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "000688",
+          "publisher": "Shanghai Stock Exchange and China Securities Index Co., Ltd.",
           "currency": "CNY",
           "calendar": "XSHG_XSHE",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
         },
         {
@@ -89,12 +89,12 @@
           "display_order": 6,
           "level": 1,
           "proxy_definition": "A股高股息与分红持续性风格代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "000922",
+          "publisher": "China Securities Index Co., Ltd.",
           "currency": "CNY",
           "calendar": "XSHG_XSHE",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
         }
       ]
@@ -111,12 +111,12 @@
           "display_order": 1,
           "level": 1,
           "proxy_definition": "A股信息技术行业综合代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "000993",
+          "publisher": "China Securities Index Co., Ltd.",
           "currency": "CNY",
           "calendar": "XSHG_XSHE",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {
             "mode": "on_demand",
             "child_direction_ids": ["semiconductor", "computer", "communication", "electronics"]
@@ -129,12 +129,12 @@
           "display_order": 2,
           "level": 1,
           "proxy_definition": "A股国防军工产业综合代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "399967",
+          "publisher": "China Securities Index Co., Ltd.",
           "currency": "CNY",
           "calendar": "XSHG_XSHE",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {
             "mode": "on_demand",
             "child_direction_ids": ["aviation", "aerospace", "shipbuilding", "defense_electronics"]
@@ -147,12 +147,12 @@
           "display_order": 3,
           "level": 1,
           "proxy_definition": "A股医药卫生与医疗服务综合代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "000991",
+          "publisher": "China Securities Index Co., Ltd.",
           "currency": "CNY",
           "calendar": "XSHG_XSHE",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {
             "mode": "on_demand",
             "child_direction_ids": ["pharmaceuticals", "medical_devices", "medical_services", "traditional_chinese_medicine"]
@@ -165,12 +165,12 @@
           "display_order": 4,
           "level": 1,
           "proxy_definition": "A股主要消费与可选消费综合代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "000990",
+          "publisher": "China Securities Index Co., Ltd.",
           "currency": "CNY",
           "calendar": "XSHG_XSHE",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {
             "mode": "on_demand",
             "child_direction_ids": ["food_beverage", "home_appliances", "automobile", "agriculture"]
@@ -183,12 +183,12 @@
           "display_order": 5,
           "level": 1,
           "proxy_definition": "A股银行、非银与地产金融链综合代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "932075",
+          "publisher": "China Securities Index Co., Ltd.",
           "currency": "CNY",
           "calendar": "XSHG_XSHE",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {
             "mode": "on_demand",
             "child_direction_ids": ["banks", "brokers", "insurance", "real_estate"]
@@ -201,12 +201,12 @@
           "display_order": 6,
           "level": 1,
           "proxy_definition": "A股上游资源与传统周期行业综合代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "000961",
+          "publisher": "China Securities Index Co., Ltd.",
           "currency": "CNY",
           "calendar": "XSHG_XSHE",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {
             "mode": "on_demand",
             "child_direction_ids": ["nonferrous_metals", "coal", "chemicals", "steel"]
@@ -226,12 +226,12 @@
           "display_order": 1,
           "level": 1,
           "proxy_definition": "香港大盘蓝筹市场综合代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "HSI",
+          "publisher": "Hang Seng Indexes Company Limited",
           "currency": "HKD",
           "calendar": "XHKG",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
         },
         {
@@ -241,12 +241,12 @@
           "display_order": 2,
           "level": 1,
           "proxy_definition": "香港上市科技龙头综合代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "HSTECH",
+          "publisher": "Hang Seng Indexes Company Limited",
           "currency": "HKD",
           "calendar": "XHKG",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {
             "mode": "on_demand",
             "child_direction_ids": ["internet_platforms", "hardware", "biotech"]
@@ -259,16 +259,15 @@
           "display_order": 3,
           "level": 1,
           "proxy_definition": "香港上市高股息与分红持续性风格代表",
-          "primary_proxy_code": null,
-          "publisher": null,
+          "primary_proxy_code": "HSHDYI",
+          "publisher": "Hang Seng Indexes Company Limited",
           "currency": "HKD",
           "calendar": "XHKG",
           "valuation_applicable": true,
-          "source_audit_status": "pending",
+          "source_audit_status": "verified",
           "focus_expansion": {"mode": "on_demand", "child_direction_ids": []}
         }
       ]
     }
   ]
 }
-

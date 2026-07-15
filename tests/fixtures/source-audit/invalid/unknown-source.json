@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "audit_version": "fixture",
+  "audited_at": "2026-07-15",
+  "sources": [
+    {
+      "id": "official",
+      "kind": "official_metadata",
+      "provider": "Official publisher",
+      "homepage_url": "https://example.com/official",
+      "terms_url": "https://example.com/terms",
+      "redistribution_policy": "link_only",
+      "timeout_seconds": 10,
+      "max_attempts": 1,
+      "enabled": true,
+      "notes": "fixture"
+    },
+    {
+      "id": "data_primary",
+      "kind": "market_data",
+      "provider": "Primary public adapter",
+      "homepage_url": "https://example.com/primary",
+      "terms_url": "https://example.com/terms",
+      "redistribution_policy": "publish_derived_only",
+      "timeout_seconds": 10,
+      "max_attempts": 2,
+      "enabled": true,
+      "notes": "fixture"
+    }
+  ],
+  "direction_sources": [
+    {
+      "direction_id": "fixture",
+      "primary_proxy_code": "FIXTURE",
+      "official_source_id": "official",
+      "official_url": "https://example.com/official/fixture",
+      "data_source_chain": ["data_primary", "not_registered"],
+      "coverage_status": "blocked"
+    }
+  ]
+}

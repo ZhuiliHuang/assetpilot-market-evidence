@@ -1,0 +1,29 @@
+name: Candidate received
+
+on:
+  push:
+    branches:
+      - chatgpt-inbox
+    paths:
+      - "ai-inbox/*.json"
+
+permissions:
+  contents: read
+
+jobs:
+  inspect-candidate-shape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out candidate only as untrusted data
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Require one candidate JSON and no other changed files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -d '' changed < <(git diff-tree --root --no-commit-id --name-only -r -z "$GITHUB_SHA")
+          test "${#changed[@]}" -eq 1
+          [[ "${changed[0]}" =~ ^ai-inbox/[0-9]{4}-[0-9]{2}-[0-9]{2}\.json$ ]]
+          jq empty "${changed[0]}"

@@ -14,8 +14,8 @@ from market_evidence.package_builder import (
     canonical_json_bytes,
     sha256_hex,
 )
+from market_evidence.publication import PublicationError, load_json, publish_validated_tree
 from market_evidence.sources.base import Observation, SourceResult
-from scripts.publish_data_branch import PublicationError, load_json, publish_validated_tree
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]

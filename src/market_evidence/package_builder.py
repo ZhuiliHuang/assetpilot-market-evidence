@@ -287,6 +287,10 @@ def build_category_packages(packages: list[dict[str, Any]], now: datetime) -> li
                         "status": package["status"],
                         **package["metrics"],
                         "sample_count": package["series"]["sample_count"],
+                        "series_preview": downsample_points(
+                            package["series"]["points"],
+                            max_points=60,
+                        ),
                         "detail_path": f"versions/{evidence_version}/directions/{package['direction_id']}.json",
                         "sha256": sha256_hex(package),
                     }

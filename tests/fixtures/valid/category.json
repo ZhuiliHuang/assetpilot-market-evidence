@@ -16,9 +16,12 @@
       "five_year_percentile": {"value": 41.8, "missing_reason": null},
       "all_history_percentile": {"value": 38.6, "missing_reason": null},
       "sample_count": 1200,
+      "series_preview": [
+        {"date": "2026-06-30", "value": 42.1, "missing_reason": null},
+        {"date": "2026-07-15", "value": 35.2, "missing_reason": null}
+      ],
       "detail_path": "versions/2026-07-15.aaaaaaaa/directions/hs300.json",
       "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
     }
   ]
 }
-

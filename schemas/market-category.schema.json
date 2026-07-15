@@ -37,6 +37,7 @@
           "five_year_percentile",
           "all_history_percentile",
           "sample_count",
+          "series_preview",
           "detail_path",
           "sha256"
         ],
@@ -48,6 +49,11 @@
           "five_year_percentile": {"$ref": "#/$defs/percentileMetric"},
           "all_history_percentile": {"$ref": "#/$defs/percentileMetric"},
           "sample_count": {"type": "integer", "minimum": 0},
+          "series_preview": {
+            "type": "array",
+            "maxItems": 60,
+            "items": {"$ref": "#/$defs/seriesPoint"}
+          },
           "detail_path": {"type": "string", "pattern": "^versions/[A-Za-z0-9._-]+/directions/[a-z0-9_]+\\.json$"},
           "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
         }
@@ -71,6 +77,30 @@
           "additionalProperties": false,
           "required": ["value", "missing_reason"],
           "properties": {
+            "value": {"type": "null"},
+            "missing_reason": {"type": "string", "minLength": 1, "maxLength": 300}
+          }
+        }
+      ]
+    },
+    "seriesPoint": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["date", "value", "missing_reason"],
+          "properties": {
+            "date": {"type": "string", "format": "date"},
+            "value": {"type": "number", "minimum": 0, "maximum": 100},
+            "missing_reason": {"type": "null"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["date", "value", "missing_reason"],
+          "properties": {
+            "date": {"type": ["string", "null"], "format": "date"},
             "value": {"type": "null"},
             "missing_reason": {"type": "string", "minLength": 1, "maxLength": 300}
           }

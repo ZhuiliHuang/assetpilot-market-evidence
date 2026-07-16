@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import time
 from collections.abc import Callable
 from typing import Any
 from urllib.error import URLError
@@ -29,8 +30,10 @@ class BoundedHttpClient:
         timeout_seconds: float = 15,
         max_attempts: int = 2,
         max_response_bytes: int = 5_000_000,
+        retry_delay_seconds: float = 0,
         user_agent: str = DEFAULT_USER_AGENT,
         opener: Callable[[Request, float], Any] = urlopen,
+        sleeper: Callable[[float], None] = time.sleep,
     ) -> None:
         if not allowed_hosts:
             raise HttpSafetyError("at least one approved host is required")
@@ -40,13 +43,17 @@ class BoundedHttpClient:
             raise HttpSafetyError("timeout must be positive and at most thirty seconds")
         if not 1 <= max_response_bytes <= 10_000_000:
             raise HttpSafetyError("response size bound is invalid")
+        if not 0 <= retry_delay_seconds <= 30:
+            raise HttpSafetyError("retry delay must be between zero and thirty seconds")
 
         self.allowed_hosts = {host.lower() for host in allowed_hosts}
         self.timeout_seconds = timeout_seconds
         self.max_attempts = max_attempts
         self.max_response_bytes = max_response_bytes
+        self.retry_delay_seconds = retry_delay_seconds
         self.user_agent = user_agent
         self.opener = opener
+        self.sleeper = sleeper
 
     def _validate_url(self, url: str) -> None:
         parsed = urlsplit(url)
@@ -71,7 +78,7 @@ class BoundedHttpClient:
         last_error: Exception | None = None
         for _attempt in range(1, self.max_attempts + 1):
             try:
-                with self.opener(request, self.timeout_seconds) as response:
+                with self.opener(request, timeout=self.timeout_seconds) as response:
                     final_url = response.geturl()
                     self._validate_url(final_url)
                     body = response.read(self.max_response_bytes + 1)
@@ -82,6 +89,8 @@ class BoundedHttpClient:
                 raise
             except (TimeoutError, URLError, OSError) as error:
                 last_error = error
+                if _attempt < self.max_attempts and self.retry_delay_seconds:
+                    self.sleeper(self.retry_delay_seconds)
 
         detail = str(last_error)[:200] if last_error else "unknown error"
         raise HttpFetchError(f"public fetch failed after {self.max_attempts} attempts: {detail}")
@@ -91,4 +100,3 @@ class BoundedHttpClient:
             return json.loads(self.get_bytes(url).decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError) as error:
             raise HttpFetchError(f"public endpoint returned malformed JSON: {error}") from error
-

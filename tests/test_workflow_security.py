@@ -19,6 +19,7 @@ def test_candidate_receiver_is_read_only_and_cannot_publish() -> None:
     assert "contents: write" not in workflow
     assert "secrets:" not in workflow
     assert "git push" not in workflow
+    assert "fetch-depth: 2" in workflow
 
 
 def test_trusted_publisher_uses_workflow_run_and_never_executes_candidate_code() -> None:
@@ -33,3 +34,16 @@ def test_trusted_publisher_uses_workflow_run_and_never_executes_candidate_code()
     assert "contents: write" in workflow
     assert "python trusted/scripts/validate_ai_candidate.py" in workflow
     assert "python candidate-source/" not in workflow
+    assert "fetch-depth: 2" in workflow
+
+
+def test_market_update_runs_live_on_weekdays_and_keeps_manual_fixture_mode() -> None:
+    workflow = workflow_text("update-market-data.yml")
+
+    assert "workflow_dispatch:" in workflow
+    assert "- fixture" in workflow
+    assert "- live" in workflow
+    assert "python scripts/update_market_data.py --output" in workflow
+    assert "schedule:" in workflow
+    assert 'cron: "30 12 * * 1-5"' in workflow
+    assert "github.event_name == 'schedule' || inputs.publish" in workflow

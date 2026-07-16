@@ -2,23 +2,28 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import shutil
 import tempfile
+import time
 from datetime import date, datetime, timezone
 from decimal import Decimal
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from market_evidence.package_builder import (
     build_market_packages,
     canonical_json_bytes,
     sha256_hex,
 )
+from market_evidence.live_sources import fetch_live_source_results
 from market_evidence.publication import PublicationError, load_json, publish_validated_tree
 from market_evidence.sources.base import Observation, SourceResult
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_LIVE_DIRECTION_DELAY_SECONDS = 12
+_SAFE_ERROR_TYPE = re.compile(r"^[A-Za-z][A-Za-z0-9_]{0,79}$")
 
 
 def month_sequence(end_date: date, count: int) -> list[date]:
@@ -86,6 +91,22 @@ def write_json(path: Path, value: Any) -> None:
     path.write_bytes(canonical_json_bytes(value) + b"\n")
 
 
+def print_source_diagnostics(direction_id: str, results: list[SourceResult]) -> None:
+    """Print bounded operational metadata without URLs, messages, or credentials."""
+    for result in results:
+        error_type = None
+        if result.errors:
+            candidate = result.errors[0].split(":", 1)[0]
+            error_type = candidate if _SAFE_ERROR_TYPE.fullmatch(candidate) else "SourceError"
+        print(json.dumps({
+            "direction_id": direction_id,
+            "source_id": result.source_id,
+            "status": result.status,
+            "row_count": len(result.rows),
+            "error_type": error_type,
+        }, ensure_ascii=True, separators=(",", ":")))
+
+
 def previous_direction_summaries(root: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]:
     manifest = load_json(root / "manifest.json")
     summaries: dict[str, dict[str, Any]] = {}
@@ -108,7 +129,10 @@ def write_built_tree(
     version = built["evidence_version"]
     version_root = staged_root / "versions" / version
     for package in built["directions"]:
-        if package["direction_id"] in failed_direction_ids:
+        if (
+            package["direction_id"] in failed_direction_ids
+            and package["direction_id"] in previous_summaries
+        ):
             continue
         write_json(version_root / "directions" / f"{package['direction_id']}.json", package)
 
@@ -120,7 +144,7 @@ def write_built_tree(
                 continue
             previous = previous_summaries.get(direction_id)
             if not previous:
-                raise PublicationError(f"cannot retain {direction_id}: no previous valid direction")
+                continue
             summary.clear()
             summary.update(previous)
             summary["status"] = "degraded"
@@ -136,7 +160,11 @@ def write_built_tree(
                 "source_id": f"{direction_id}_public_source_chain",
                 "failed_at": now.isoformat().replace("+00:00", "Z"),
                 "last_successful_date": last_date,
-                "impact": "retained the last validated direction package; current evidence is degraded",
+                "impact": (
+                    "retained the last validated direction package; current evidence is degraded"
+                    if direction_id in previous_summaries
+                    else "no previous validated direction package is available"
+                ),
             }
             for direction_id in sorted(failed_direction_ids)
         ]
@@ -161,12 +189,11 @@ def update_public_tree(
     fixture_mode: bool = False,
     failed_direction_ids: set[str] | None = None,
     total_failure: bool = False,
+    source_loader: Callable[[dict[str, Any], date, date, datetime], list[SourceResult]] | None = None,
+    sleeper: Callable[[float], None] = time.sleep,
 ) -> bool:
     if total_failure:
         return False
-    if not fixture_mode:
-        raise PublicationError("live source probes are not enabled until end-to-end acceptance")
-
     now = now or datetime.now(timezone.utc)
     failed_direction_ids = failed_direction_ids or set()
     directions = locked_directions()
@@ -175,9 +202,35 @@ def update_public_tree(
     if unknown:
         raise PublicationError(f"unknown failed directions: {sorted(unknown)}")
 
-    source_results_by_direction = {
-        direction["id"]: fixture_source_results(direction, now) for direction in directions
-    }
+    if fixture_mode:
+        source_results_by_direction = {
+            direction["id"]: fixture_source_results(direction, now) for direction in directions
+        }
+    else:
+        use_default_live_loader = source_loader is None
+        loader = source_loader or fetch_live_source_results
+        start_date = date(now.year - 10, now.month, min(now.day, 28))
+        end_date = now.date()
+        source_results_by_direction = {}
+        for index, direction in enumerate(directions):
+            results = loader(direction, start_date, end_date, now)
+            source_results_by_direction[direction["id"]] = results
+            print_source_diagnostics(direction["id"], results)
+            if use_default_live_loader and index < len(directions) - 1:
+                sleeper(DEFAULT_LIVE_DIRECTION_DELAY_SECONDS)
+        live_failures = {
+            direction["id"]
+            for direction in directions
+            if not any(
+                result.status == "success" and result.rows
+                for result in source_results_by_direction[direction["id"]]
+            )
+        }
+        failed_direction_ids.update(live_failures)
+        if len(live_failures) == len(directions):
+            if destination.exists():
+                return False
+            raise PublicationError("all approved live public source chains failed")
     built = build_market_packages(directions, source_results_by_direction, now)
     staging_parent = destination.resolve().parent
     staging_parent.mkdir(parents=True, exist_ok=True)
@@ -213,12 +266,12 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    update_public_tree(
+    changed = update_public_tree(
         args.output,
         fixture_mode=args.fixtures,
         failed_direction_ids=set(args.fail_direction),
     )
-    return 0
+    return 0 if changed else 2
 
 
 if __name__ == "__main__":

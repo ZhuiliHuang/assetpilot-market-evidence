@@ -1,15 +1,19 @@
 name: Update market data
 
 on:
+  schedule:
+    # 20:30 Asia/Shanghai, Monday through Friday (UTC+8, no DST).
+    - cron: "30 12 * * 1-5"
   workflow_dispatch:
     inputs:
       mode:
-        description: "Fixture mode remains the only accepted mode before end-to-end acceptance"
+        description: "Build deterministic fixtures or probe approved live public sources"
         required: true
         default: fixture
         type: choice
         options:
           - fixture
+          - live
       publish:
         description: "Publish the validated tree to the data branch"
         required: true
@@ -39,8 +43,15 @@ jobs:
         run: python -m pip install -e ".[dev]"
       - name: Run repository and calculation tests
         run: python -m pytest -q
-      - name: Build fixture evidence in an isolated directory
-        run: python scripts/update_market_data.py --fixtures --output "$RUNNER_TEMP/public"
+      - name: Build validated evidence in an isolated directory
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.mode }}" == "fixture" ]]; then
+            python scripts/update_market_data.py --fixtures --output "$RUNNER_TEMP/public"
+          else
+            python scripts/update_market_data.py --output "$RUNNER_TEMP/public"
+          fi
       - name: Upload validated public tree
         uses: actions/upload-artifact@v4
         with:
@@ -50,7 +61,7 @@ jobs:
           retention-days: 3
 
   publish:
-    if: ${{ inputs.publish }}
+    if: ${{ github.event_name == 'schedule' || inputs.publish }}
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -80,11 +91,10 @@ jobs:
           git push origin data
 
   deploy:
-    if: ${{ inputs.publish }}
+    if: ${{ github.event_name == 'schedule' || inputs.publish }}
     needs: publish
     uses: ./.github/workflows/deploy-pages.yml
     permissions:
       contents: read
       pages: write
       id-token: write
-

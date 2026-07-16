@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
-  "audit_version": "2026-07-15.1",
-  "audited_at": "2026-07-15",
+  "audit_version": "2026-07-16.2",
+  "audited_at": "2026-07-16",
   "sources": [
     {
       "id": "csindex_official_factsheets",
@@ -40,6 +40,18 @@
       "notes": "Official identities, factsheets and methodology links. Full downloads may require an Index360 account."
     },
     {
+      "id": "globalx_official_etf_page",
+      "kind": "official_metadata",
+      "provider": "Mirae Asset Global Investments (Hong Kong) Limited",
+      "homepage_url": "https://www.globalxetfs.com.hk/funds/hang-seng-high-dividend-yield-etf/",
+      "terms_url": "https://www.globalxetfs.com.hk/terms-of-use/",
+      "redistribution_policy": "link_only",
+      "timeout_seconds": 15,
+      "max_attempts": 2,
+      "enabled": true,
+      "notes": "Official identity for the listed ETF proxy tracking the Hang Seng High Dividend Yield Index."
+    },
+    {
       "id": "akshare_csindex_valuation",
       "kind": "market_data",
       "provider": "AKShare open-source adapter with public CSI endpoints",
@@ -74,6 +86,18 @@
       "max_attempts": 2,
       "enabled": true,
       "notes": "Independent adapter fallback; no raw response is stored or published."
+    },
+    {
+      "id": "tencent_index_history",
+      "kind": "market_data",
+      "provider": "Tencent Finance public market endpoint",
+      "homepage_url": "https://stockapp.finance.qq.com/",
+      "terms_url": "https://www.tencent.com/en-us/statement.html",
+      "redistribution_policy": "publish_derived_only",
+      "timeout_seconds": 15,
+      "max_attempts": 2,
+      "enabled": true,
+      "notes": "Cloud-compatible primary price history; only derived monthly percentiles and provenance are published."
     },
     {
       "id": "sina_index_history",
@@ -118,7 +142,7 @@
       "primary_proxy_code": "000300",
       "official_source_id": "csindex_official_factsheets",
       "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000300factsheet.pdf",
-      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "data_source_chain": ["tencent_index_history", "sina_index_history", "eastmoney_index_history", "akshare_csindex_valuation", "akshare_index_history"],
       "coverage_status": "probe_required"
     },
     {
@@ -126,7 +150,7 @@
       "primary_proxy_code": "000905",
       "official_source_id": "csindex_official_factsheets",
       "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000905factsheet.pdf",
-      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "data_source_chain": ["tencent_index_history", "sina_index_history", "eastmoney_index_history", "akshare_csindex_valuation", "akshare_index_history"],
       "coverage_status": "probe_required"
     },
     {
@@ -134,7 +158,7 @@
       "primary_proxy_code": "000852",
       "official_source_id": "csindex_official_factsheets",
       "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000852factsheet.pdf",
-      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "data_source_chain": ["tencent_index_history", "sina_index_history", "eastmoney_index_history", "akshare_csindex_valuation", "akshare_index_history"],
       "coverage_status": "probe_required"
     },
     {
@@ -142,7 +166,7 @@
       "primary_proxy_code": "399006",
       "official_source_id": "szse_official_index_pages",
       "official_url": "https://www.szse.cn/market/product/index/index.html?code=399006",
-      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "data_source_chain": ["tencent_index_history", "sina_index_history", "eastmoney_index_history", "akshare_csindex_valuation", "akshare_index_history"],
       "coverage_status": "probe_required"
     },
     {
@@ -150,7 +174,7 @@
       "primary_proxy_code": "000688",
       "official_source_id": "csindex_official_factsheets",
       "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000688factsheet.pdf",
-      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "data_source_chain": ["tencent_index_history", "sina_index_history", "eastmoney_index_history", "akshare_csindex_valuation", "akshare_index_history"],
       "coverage_status": "probe_required"
     },
     {
@@ -158,7 +182,7 @@
       "primary_proxy_code": "000922",
       "official_source_id": "csindex_official_factsheets",
       "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000922factsheet.pdf",
-      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "data_source_chain": ["tencent_index_history", "sina_index_history", "eastmoney_index_history", "akshare_csindex_valuation", "akshare_index_history"],
       "coverage_status": "probe_required"
     },
     {
@@ -166,7 +190,7 @@
       "primary_proxy_code": "000993",
       "official_source_id": "csindex_official_factsheets",
       "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000993factsheet.pdf",
-      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "data_source_chain": ["tencent_index_history", "sina_index_history", "eastmoney_index_history", "akshare_csindex_valuation", "akshare_index_history"],
       "coverage_status": "probe_required"
     },
     {
@@ -174,7 +198,7 @@
       "primary_proxy_code": "399967",
       "official_source_id": "csindex_official_factsheets",
       "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/399967factsheet.pdf",
-      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "data_source_chain": ["tencent_index_history", "sina_index_history", "eastmoney_index_history", "akshare_csindex_valuation", "akshare_index_history"],
       "coverage_status": "probe_required"
     },
     {
@@ -182,7 +206,7 @@
       "primary_proxy_code": "000991",
       "official_source_id": "csindex_official_factsheets",
       "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000991factsheet.pdf",
-      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "data_source_chain": ["tencent_index_history", "sina_index_history", "eastmoney_index_history", "akshare_csindex_valuation", "akshare_index_history"],
       "coverage_status": "probe_required"
     },
     {
@@ -190,15 +214,15 @@
       "primary_proxy_code": "000990",
       "official_source_id": "csindex_official_factsheets",
       "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000990factsheet.pdf",
-      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "data_source_chain": ["tencent_index_history", "sina_index_history", "eastmoney_index_history", "akshare_csindex_valuation", "akshare_index_history"],
       "coverage_status": "probe_required"
     },
     {
       "direction_id": "finance",
-      "primary_proxy_code": "932075",
+      "primary_proxy_code": "000992",
       "official_source_id": "csindex_official_factsheets",
-      "official_url": "https://www.csindex.com.cn/zh-CN/indices/index-detail/932075",
-      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000992factsheet.pdf",
+      "data_source_chain": ["tencent_index_history", "sina_index_history", "eastmoney_index_history", "akshare_csindex_valuation", "akshare_index_history"],
       "coverage_status": "probe_required"
     },
     {
@@ -206,7 +230,7 @@
       "primary_proxy_code": "000961",
       "official_source_id": "csindex_official_factsheets",
       "official_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000961factsheet.pdf",
-      "data_source_chain": ["akshare_csindex_valuation", "akshare_index_history", "eastmoney_index_history", "sina_index_history"],
+      "data_source_chain": ["tencent_index_history", "sina_index_history", "eastmoney_index_history", "akshare_csindex_valuation", "akshare_index_history"],
       "coverage_status": "probe_required"
     },
     {
@@ -214,7 +238,7 @@
       "primary_proxy_code": "HSI",
       "official_source_id": "hsi_official_index_pages",
       "official_url": "https://www.hsi.com.hk/eng/indexes/all-indexes/hsi",
-      "data_source_chain": ["akshare_hk_index_history", "eastmoney_index_history", "stooq_index_history"],
+      "data_source_chain": ["tencent_index_history", "stooq_index_history", "eastmoney_index_history", "akshare_hk_index_history"],
       "coverage_status": "probe_required"
     },
     {
@@ -222,15 +246,15 @@
       "primary_proxy_code": "HSTECH",
       "official_source_id": "hsi_official_index_pages",
       "official_url": "https://www.hsi.com.hk/eng/indexes/all-indexes/hstech",
-      "data_source_chain": ["akshare_hk_index_history", "eastmoney_index_history", "stooq_index_history"],
+      "data_source_chain": ["tencent_index_history", "eastmoney_index_history", "akshare_hk_index_history"],
       "coverage_status": "probe_required"
     },
     {
       "direction_id": "hk_dividend",
-      "primary_proxy_code": "HSHDYI",
-      "official_source_id": "hsi_official_index_pages",
-      "official_url": "https://www.hsi.com.hk/eng/indexes/all-indexes/hshdyi",
-      "data_source_chain": ["akshare_hk_index_history", "eastmoney_index_history", "stooq_index_history"],
+      "primary_proxy_code": "03110",
+      "official_source_id": "globalx_official_etf_page",
+      "official_url": "https://www.globalxetfs.com.hk/funds/hang-seng-high-dividend-yield-etf/",
+      "data_source_chain": ["tencent_index_history", "eastmoney_index_history", "akshare_hk_index_history"],
       "coverage_status": "probe_required"
     }
   ]

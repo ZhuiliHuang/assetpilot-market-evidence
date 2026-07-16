@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0.0",
+  "candidate_version": "2026-07-16.16820a854cd4",
+  "evidence_version": "2026-07-16.0bdcb9092724",
+  "evidence_manifest_sha256": "16820a854cd48c82b0e34e810a7039555ffa5a687bd061137e5adc5716133974",
+  "analysis_date": "2026-07-16",
+  "generated_at": "2026-07-16T17:36:00+08:00",
+  "focus_opportunities": [
+    {
+      "direction_id": "healthcare",
+      "thesis": "公开行情历史位置偏低，且主源与独立来源方向一致，值得继续观察基本面与趋势修复",
+      "supporting_evidence_refs": [
+        "directions/healthcare#/metrics/current_percentile/value",
+        "directions/healthcare#/source_evidence/0/url",
+        "directions/healthcare#/source_evidence/0/as_of"
+      ],
+      "counter_evidence_refs": [
+        "directions/healthcare#/metrics/five_year_percentile/value",
+        "directions/healthcare#/source_evidence/1/url",
+        "directions/healthcare#/source_evidence/1/as_of"
+      ],
+      "invalidation_conditions": [
+        "若后续公开行情无法维持来源一致，或基本面证据继续缺失，则该观察理由失效"
+      ],
+      "research_action": "compare_public_evidence",
+      "limitations": [
+        "当前仅为价格历史位置，不代表估值便宜"
+      ]
+    },
+    {
+      "direction_id": "consumer",
+      "thesis": "公开行情历史位置偏低，但独立核验日期陈旧，只适合作为待复核线索",
+      "supporting_evidence_refs": [
+        "directions/consumer#/metrics/current_percentile/value",
+        "directions/consumer#/source_evidence/0/url",
+        "directions/consumer#/source_evidence/0/as_of"
+      ],
+      "counter_evidence_refs": [
+        "directions/consumer#/metrics/five_year_percentile/value",
+        "directions/consumer#/source_evidence/1/url",
+        "directions/consumer#/source_evidence/1/as_of"
+      ],
+      "invalidation_conditions": [
+        "若独立来源恢复新鲜且不再支持当前历史位置，则该线索失效"
+      ],
+      "research_action": "wait_for_confirmation",
+      "limitations": [
+        "独立来源新鲜度不足，不能据此形成行动结论"
+      ]
+    }
+  ],
+  "risks": [
+    {
+      "direction_id": "information",
+      "risk_type": "crowding",
+      "summary": "公开行情历史位置偏高，短期拥挤与回撤风险需要持续复核",
+      "evidence_refs": [
+        "directions/information#/metrics/current_percentile/value",
+        "directions/information#/metrics/five_year_percentile/value",
+        "directions/information#/source_evidence/0/as_of"
+      ],
+      "invalidation_conditions": [
+        "若后续历史位置明显回落且多源仍保持一致，该风险判断可下调"
+      ]
+    }
+  ],
+  "overall_limitations": [
+    "公共证据只描述固定指数与行业代理，不包含个人组合",
+    "价格历史位置不等同于估值、盈利质量或未来收益"
+  ]
+}

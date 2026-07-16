@@ -35,12 +35,13 @@ def test_trusted_publisher_uses_workflow_run_and_never_executes_candidate_code()
     assert "python candidate-source/" not in workflow
 
 
-def test_market_update_allows_manual_live_probe_but_has_no_schedule_before_acceptance() -> None:
+def test_market_update_runs_live_on_weekdays_and_keeps_manual_fixture_mode() -> None:
     workflow = workflow_text("update-market-data.yml")
 
     assert "workflow_dispatch:" in workflow
     assert "- fixture" in workflow
     assert "- live" in workflow
     assert "python scripts/update_market_data.py --output" in workflow
-    assert "schedule:" not in workflow
-    assert "cron:" not in workflow
+    assert "schedule:" in workflow
+    assert 'cron: "30 12 * * 1-5"' in workflow
+    assert "github.event_name == 'schedule' || inputs.publish" in workflow

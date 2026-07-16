@@ -84,6 +84,13 @@ def test_category_and_manifest_packages_stay_within_initial_size_budgets() -> No
     broad_summary = categories[0]["directions"][0]
     assert 2 <= len(broad_summary["series_preview"]) <= 60
     assert broad_summary["series_preview"][-1] == package["series"]["points"][-1]
+    assert broad_summary["series_metric"] == "valuation_percentile"
+    assert broad_summary["adopted_source_id"] == "akshare_csindex_valuation"
+    assert broad_summary["cross_validation"] == "confirmed"
+    assert broad_summary["attempted_source_ids"] == [
+        "akshare_csindex_valuation",
+        "eastmoney_index_history",
+    ]
     assert len(canonical_json_bytes(manifest)) < 100_000
     assert all(len(canonical_json_bytes(category)) < 500_000 for category in categories)
     assert sum(len(canonical_json_bytes(category)) for category in categories) < 2_000_000

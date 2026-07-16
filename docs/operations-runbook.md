@@ -48,3 +48,13 @@ The intended weekday schedule is `20:30 Asia/Shanghai`. GitHub cron uses UTC, so
 - Record the failed source or candidate, its attempted time, the retained data date, and the decision impact.
 - Prefer another approved public source only when its license and schema mapping are already registered.
 - Never repair a cloud failure by adding Wind data, secrets, personal context, or unreviewed files.
+
+## Acceptance record
+
+Accepted on 2026-07-16:
+
+- Live numeric workflow `29477180354` completed build, publication, and Pages deployment. Evidence version `2026-07-16.0bdcb9092724` contains fifteen ready directions, compact provenance on every category card, zero degraded directions, and zero forbidden-field matches.
+- Valid candidate receiver `29491407664` and trusted publisher `29491416728` completed successfully. The official analysis contains two focus directions and one risk direction, bound to the exact public manifest.
+- Intentional trading-language candidate publisher `29491639810` failed with the expected validation error; the preceding official analysis hash remained unchanged.
+- The candidate branch was restored to a valid candidate and trusted publisher `29491744826` completed successfully.
+- The workday numeric cron is enabled at the UTC expression corresponding to `20:30 Asia/Shanghai`. The workday `22:00 Asia/Shanghai` ChatGPT task is the only remaining external setup item.

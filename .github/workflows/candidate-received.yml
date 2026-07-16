@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 2
       - name: Require one candidate JSON and no other changed files
         shell: bash
         run: |

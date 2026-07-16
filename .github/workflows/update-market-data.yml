@@ -1,6 +1,9 @@
 name: Update market data
 
 on:
+  schedule:
+    # 20:30 Asia/Shanghai, Monday through Friday (UTC+8, no DST).
+    - cron: "30 12 * * 1-5"
   workflow_dispatch:
     inputs:
       mode:
@@ -44,7 +47,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [[ "${{ inputs.mode }}" == "fixture" ]]; then
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.mode }}" == "fixture" ]]; then
             python scripts/update_market_data.py --fixtures --output "$RUNNER_TEMP/public"
           else
             python scripts/update_market_data.py --output "$RUNNER_TEMP/public"
@@ -58,7 +61,7 @@ jobs:
           retention-days: 3
 
   publish:
-    if: ${{ inputs.publish }}
+    if: ${{ github.event_name == 'schedule' || inputs.publish }}
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -88,7 +91,7 @@ jobs:
           git push origin data
 
   deploy:
-    if: ${{ inputs.publish }}
+    if: ${{ github.event_name == 'schedule' || inputs.publish }}
     needs: publish
     uses: ./.github/workflows/deploy-pages.yml
     permissions:

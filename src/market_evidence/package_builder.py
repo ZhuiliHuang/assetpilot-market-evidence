@@ -285,6 +285,10 @@ def build_category_packages(packages: list[dict[str, Any]], now: datetime) -> li
                         "direction_id": package["direction_id"],
                         "display_name": package["display_name"],
                         "status": package["status"],
+                        "series_metric": package["series"]["metric"],
+                        "adopted_source_id": package["quality"]["adopted_source_id"],
+                        "cross_validation": package["quality"]["cross_validation"],
+                        "attempted_source_ids": package["quality"]["attempted_source_ids"],
                         **package["metrics"],
                         "sample_count": package["series"]["sample_count"],
                         "series_preview": downsample_points(

@@ -1,10 +1,10 @@
 {
     "schema_version":  "1.0.0",
-    "candidate_version":  "2026-07-16.16820a854cd4",
+    "candidate_version":  "2026-07-16.87dc2894a9d5",
     "evidence_version":  "2026-07-16.0bdcb9092724",
-    "evidence_manifest_sha256":  "16820a854cd48c82b0e34e810a7039555ffa5a687bd061137e5adc5716133974",
+    "evidence_manifest_sha256":  "87dc2894a9d5b200dab18def95e3cc675ba6770f74d5d0e4dc5af41e8300096a",
     "analysis_date":  "2026-07-16",
-    "generated_at":  "2026-07-16T18:32:00+08:00",
+    "generated_at":  "2026-07-16T18:41:00+08:00",
     "focus_opportunities":  [
                                 {
                                     "direction_id":  "healthcare",

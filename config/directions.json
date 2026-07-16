@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "registry_version": "2026-07-15.1",
+  "registry_version": "2026-07-16.2",
   "categories": [
     {
       "id": "broad_style",
@@ -183,7 +183,7 @@
           "display_order": 5,
           "level": 1,
           "proxy_definition": "A股银行、非银与地产金融链综合代表",
-          "primary_proxy_code": "932075",
+          "primary_proxy_code": "000992",
           "publisher": "China Securities Index Co., Ltd.",
           "currency": "CNY",
           "calendar": "XSHG_XSHE",
@@ -259,8 +259,8 @@
           "display_order": 3,
           "level": 1,
           "proxy_definition": "香港上市高股息与分红持续性风格代表",
-          "primary_proxy_code": "HSHDYI",
-          "publisher": "Hang Seng Indexes Company Limited",
+          "primary_proxy_code": "03110",
+          "publisher": "Mirae Asset Global Investments (Hong Kong) Limited",
           "currency": "HKD",
           "calendar": "XHKG",
           "valuation_applicable": true,

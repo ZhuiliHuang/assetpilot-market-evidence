@@ -63,6 +63,23 @@ def test_sources_have_explicit_redistribution_and_bounded_retries() -> None:
         assert "wind" not in source["provider"].lower()
 
 
+def test_cloud_primary_source_and_proxy_codes_are_audited() -> None:
+    source_registry = load_json(SOURCES_PATH)
+    sources = {source["id"]: source for source in source_registry["sources"]}
+    chains = {
+        direction["direction_id"]: direction
+        for direction in source_registry["direction_sources"]
+    }
+
+    assert sources["tencent_index_history"]["redistribution_policy"] == "publish_derived_only"
+    assert all(
+        direction["data_source_chain"][0] == "tencent_index_history"
+        for direction in chains.values()
+    )
+    assert chains["finance"]["primary_proxy_code"] == "000992"
+    assert chains["hk_dividend"]["primary_proxy_code"] == "03110"
+
+
 def test_proxy_identifiers_are_locked_after_the_source_audit() -> None:
     directions = load_json(DIRECTIONS_PATH)
 

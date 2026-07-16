@@ -4,11 +4,11 @@
     "evidence_version":  "2026-07-16.0bdcb9092724",
     "evidence_manifest_sha256":  "87dc2894a9d5b200dab18def95e3cc675ba6770f74d5d0e4dc5af41e8300096a",
     "analysis_date":  "2026-07-16",
-    "generated_at":  "2026-07-16T18:41:00+08:00",
+    "generated_at":  "2026-07-16T18:43:00+08:00",
     "focus_opportunities":  [
                                 {
                                     "direction_id":  "healthcare",
-                                    "thesis":  "公开行情历史位置偏低，且主源与独立来源方向一致，值得继续观察基本面与趋势修复，建议买入",
+                                    "thesis":  "公开行情历史位置偏低，且主源与独立来源方向一致，值得继续观察基本面与趋势修复",
                                     "supporting_evidence_refs":  [
                                                                      "directions/healthcare#/metrics/current_percentile/value",
                                                                      "directions/healthcare#/source_evidence/0/url",

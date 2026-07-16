@@ -1,6 +1,6 @@
 # Redistribution and source-use policy
 
-Audit date: 2026-07-15
+Audit date: 2026-07-16
 
 This repository uses a conservative four-state policy. The policy describes what this project may publish; it does not claim ownership of any upstream market data.
 
@@ -13,9 +13,9 @@ This repository uses a conservative four-state policy. The policy describes what
 
 ## Current decisions
 
-- China Securities Index, Shenzhen Stock Exchange, and Hang Seng Indexes official pages are `link_only`. Their factsheets and methodologies establish proxy identity and document the metric, but the repository does not mirror those files.
+- China Securities Index, Shenzhen Stock Exchange, Hang Seng Indexes, and the official Global X ETF page are `link_only`. Their factsheets, methodologies, and product page establish proxy identity and document the metric, but the repository does not mirror those files.
 - AKShare is an open-source adapter, not the owner of every underlying dataset. Its adapters are therefore `publish_derived_only`; each run must retain the actual upstream provider in provenance.
-- Eastmoney, Sina Finance, and Stooq public endpoints are `publish_derived_only`. Raw responses and raw close/valuation tables are not committed, served through Pages, or placed in Actions artifacts.
+- Tencent Finance, Eastmoney, Sina Finance, and Stooq public endpoints are `publish_derived_only`. Raw responses and raw close/valuation tables are not committed, served through Pages, or placed in Actions artifacts.
 - Wind is deliberately absent from the cloud source registry. It remains a local, optional verification tier only.
 - If an upstream term, endpoint, or redistribution boundary becomes unclear, the source is changed to `blocked` before the next scheduled publication.
 

@@ -11,11 +11,13 @@ from market_evidence.sources.base import SourceResult, SourceTarget
 from market_evidence.sources.eastmoney import EastmoneyPriceAdapter
 from market_evidence.sources.sina import SinaPriceAdapter
 from market_evidence.sources.stooq import StooqPriceAdapter
+from market_evidence.sources.tencent import TencentPriceAdapter
 
 
 _EASTMONEY_HOST = "push2his.eastmoney.com"
 _STOOQ_HOST = "stooq.com"
 _SINA_HOST = "quotes.sina.cn"
+_TENCENT_HOST = "web.ifzq.gtimg.cn"
 _HK_EASTMONEY_SECURITY_IDS = {
     "HSI": "100.HSI",
     "HSTECH": "124.HSTECH",
@@ -26,6 +28,10 @@ _EASTMONEY_SECURITY_ID_OVERRIDES = {
 }
 _STOOQ_SYMBOLS = {
     "HSI": "^hsi",
+}
+_TENCENT_HK_SYMBOLS = {
+    "HSI": "hkHSI",
+    "HSTECH": "hkHSTECH",
 }
 
 
@@ -78,6 +84,29 @@ def sina_price_url(target: SourceTarget, _start_date: date, _end_date: date) -> 
     return f"https://{_SINA_HOST}/cn/api/jsonp_v2.php/var%20_assetpilot=/CN_MarketDataService.getKLineData?{query}"
 
 
+def tencent_symbol(target: SourceTarget) -> str:
+    if target.proxy_code in _TENCENT_HK_SYMBOLS:
+        return _TENCENT_HK_SYMBOLS[target.proxy_code]
+    if not target.proxy_code.isdigit():
+        raise ValueError("Tencent coverage is not approved for this locked direction")
+    if target.currency == "HKD":
+        return f"hk{target.proxy_code}"
+    market = "sz" if target.proxy_code.startswith("399") else "sh"
+    return f"{market}{target.proxy_code}"
+
+
+def tencent_price_url(target: SourceTarget, start_date: date, end_date: date) -> str:
+    param = ",".join((
+        tencent_symbol(target),
+        "day",
+        start_date.isoformat(),
+        end_date.isoformat(),
+        "640",
+        "qfq",
+    ))
+    return f"https://{_TENCENT_HOST}/appstock/app/fqkline/get?{urlencode({'param': param})}"
+
+
 def _failed_result(source_id: str, now: datetime, error: Exception) -> SourceResult:
     return SourceResult(
         source_id=source_id,
@@ -105,7 +134,7 @@ def fetch_live_source_results(
         currency=direction["currency"],
     )
     client = (client_factory or (lambda: BoundedHttpClient(
-        allowed_hosts={_EASTMONEY_HOST, _SINA_HOST, _STOOQ_HOST},
+        allowed_hosts={_EASTMONEY_HOST, _SINA_HOST, _STOOQ_HOST, _TENCENT_HOST},
         timeout_seconds=15,
         max_attempts=2,
         max_response_bytes=5_000_000,
@@ -113,13 +142,24 @@ def fetch_live_source_results(
     )))()
     results: list[SourceResult] = []
 
-    eastmoney = EastmoneyPriceAdapter(client=client, url_builder=eastmoney_price_url)
+    tencent = TencentPriceAdapter(
+        client=client,
+        url_builder=tencent_price_url,
+        symbol_builder=tencent_symbol,
+    )
     try:
-        results.append(eastmoney.fetch(target, start_date, end_date))
+        results.append(tencent.fetch(target, start_date, end_date))
     except Exception as error:
-        results.append(_failed_result(eastmoney.source_id, now, error))
+        results.append(_failed_result(tencent.source_id, now, error))
 
-    if target.proxy_code.isdigit():
+    if not any(result.status == "success" and result.rows for result in results):
+        eastmoney = EastmoneyPriceAdapter(client=client, url_builder=eastmoney_price_url)
+        try:
+            results.append(eastmoney.fetch(target, start_date, end_date))
+        except Exception as error:
+            results.append(_failed_result(eastmoney.source_id, now, error))
+
+    if target.proxy_code.isdigit() and target.currency == "CNY":
         sina = SinaPriceAdapter(client=client, url_builder=sina_price_url)
         try:
             results.append(sina.fetch(target, start_date, end_date))

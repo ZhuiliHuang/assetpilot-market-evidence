@@ -40,4 +40,4 @@ Build a real public-only package into a disposable directory with:
 python scripts/update_market_data.py --output <temporary-directory>
 ```
 
-The live path sends only the fifteen locked public index identifiers and bounded date/field parameters to approved public hosts. It never reads AssetPilot, Wind credentials, or private files. Keep `publish=false` until the generated tree, source conflicts, missing cross-checks, and failure-retention behavior have been inspected.
+The live path sends only the fifteen locked public index or explicitly documented ETF proxy identifiers and bounded date/field parameters to approved public hosts. It never reads AssetPilot, Wind credentials, or private files. Keep `publish=false` until the generated tree, source conflicts, missing cross-checks, and failure-retention behavior have been inspected.

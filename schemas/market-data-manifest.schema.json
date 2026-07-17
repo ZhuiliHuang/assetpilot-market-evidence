@@ -51,6 +51,22 @@
         }
       ]
     },
+    "analysis_fallback": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["analysis_as_of", "package_path", "sha256", "evidence_version"],
+          "properties": {
+            "analysis_as_of": {"type": "string", "format": "date"},
+            "package_path": {"type": "string", "pattern": "^versions/[A-Za-z0-9._-]+/market-analysis\\.json$"},
+            "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "evidence_version": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
     "degraded_sources": {
       "type": "array",
       "items": {

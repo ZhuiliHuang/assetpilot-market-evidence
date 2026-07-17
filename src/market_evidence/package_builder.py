@@ -328,6 +328,7 @@ def build_manifest(
             for category in categories
         ],
         "analysis": None,
+        "analysis_fallback": None,
         "degraded_sources": [],
     }
 

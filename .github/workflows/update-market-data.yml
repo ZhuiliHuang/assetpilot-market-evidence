@@ -34,6 +34,12 @@ jobs:
     steps:
       - name: Check out trusted workflow code
         uses: actions/checkout@v4
+      - name: Check out the last validated data branch
+        uses: actions/checkout@v4
+        with:
+          ref: data
+          path: previous-data
+          persist-credentials: false
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -43,6 +49,12 @@ jobs:
         run: python -m pip install -e ".[dev]"
       - name: Run repository and calculation tests
         run: python -m pytest -q
+      - name: Seed the last validated public tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/public"
+          cp -R previous-data/public/. "$RUNNER_TEMP/public/"
       - name: Build validated evidence in an isolated directory
         shell: bash
         run: |

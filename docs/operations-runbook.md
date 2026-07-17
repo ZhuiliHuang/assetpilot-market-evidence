@@ -4,8 +4,8 @@
 
 - This repository contains public market identifiers, public-source metadata, deterministic derivatives, and validated public conclusions only.
 - Never add AssetPilot databases, holdings, accounts, quantities, costs, transactions, totals, screenshots, OCR text, local files, private logs, Wind credentials, or Wind raw data.
-- `main` owns trusted code and validation. `data` owns Actions-published packages. `chatgpt-inbox` is untrusted and may add only one `ai-inbox/YYYY-MM-DD.json` candidate per commit.
-- A failed numeric refresh or AI candidate must leave the last valid official package unchanged.
+- `main` owns trusted code and validation. `data` owns Actions-published packages. `chatgpt-inbox` accepts untrusted candidates only from a separately approved writer; the official ChatGPT GitHub app is read-only.
+- A failed AI refresh must retain the last hash-verified analysis. When numeric evidence advances, the retained analysis is exposed only as an older-evidence fallback and cannot raise actionability.
 
 ## Before remote publication
 
@@ -32,15 +32,15 @@ Enable the weekday numeric schedule only after one manually dispatched public-da
 
 The intended weekday schedule is `20:30 Asia/Shanghai`. GitHub cron uses UTC, so account for seasonal assumptions explicitly and document the chosen expression before enabling it.
 
-## ChatGPT publication gate
+## ChatGPT read-only review gate
 
-1. Grant the ChatGPT GitHub app access only to this public repository, not the private AssetPilot repository.
+1. Grant the official ChatGPT GitHub app read access only to this public repository, not the private AssetPilot repository.
 2. Create a paused workday task for `22:00 Asia/Shanghai`, with no project files and medium reasoning on a supported non-Pro model.
 3. Use [`chatgpt-scheduled-task-prompt.md`](chatgpt-scheduled-task-prompt.md) verbatim.
-4. Run it manually once. Confirm it changes exactly one dated file on `chatgpt-inbox`.
-5. Confirm the candidate binds to the current evidence version and manifest hash, every reference resolves, the trusted validator publishes to `data`, Pages updates, and AssetPilot shows separate evidence and analysis dates.
-6. Commit one intentionally invalid simulated candidate and confirm validation fails while the prior official analysis remains available.
-7. Enable the task only after both the success path and failure-retention drill pass.
+4. Run it manually once. Confirm it reads the public repository, returns a structured review in the task result, and changes no repository file or branch.
+5. Do not paste a PAT, GitHub token, Wind credential, or other secret into the task. The official app cannot be elevated to write by changing installation scope.
+6. Keep the trusted candidate validator for manual fixtures or a future separately approved writer. Any future automatic writer needs its own threat model, least-privilege review, and acceptance drill.
+7. Enable the read-only task only after the review output cites the current evidence version and resolves all published evidence references.
 
 ## Failure response
 
@@ -48,6 +48,7 @@ The intended weekday schedule is `20:30 Asia/Shanghai`. GitHub cron uses UTC, so
 - Record the failed source or candidate, its attempted time, the retained data date, and the decision impact.
 - Prefer another approved public source only when its license and schema mapping are already registered.
 - Never repair a cloud failure by adding Wind data, secrets, personal context, or unreviewed files.
+- If numeric evidence advances while AI review fails, keep the prior analysis with its original date, hash, and evidence version; label it stale/review-only and do not use it to raise an action level.
 
 ## Acceptance record
 
@@ -57,4 +58,5 @@ Accepted on 2026-07-16:
 - Valid candidate receiver `29491407664` and trusted publisher `29491416728` completed successfully. The official analysis contains two focus directions and one risk direction, bound to the exact public manifest.
 - Intentional trading-language candidate publisher `29491639810` failed with the expected validation error; the preceding official analysis hash remained unchanged.
 - The candidate branch was restored to a valid candidate and trusted publisher `29491744826` completed successfully.
-- The workday numeric cron is enabled at the UTC expression corresponding to `20:30 Asia/Shanghai`. The workday `22:00 Asia/Shanghai` ChatGPT task is the only remaining external setup item.
+- The workday numeric cron is enabled at the UTC expression corresponding to `20:30 Asia/Shanghai`.
+- The workday `22:00 Asia/Shanghai` ChatGPT task was created and manually run on 2026-07-17. Repository read succeeded; repository write failed with HTTP 403 because the official ChatGPT GitHub app is read-only. Direct scheduled-task publication is therefore unsupported and must not be represented as a closed automatic write loop.

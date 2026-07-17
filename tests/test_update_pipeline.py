@@ -234,3 +234,128 @@ def test_first_live_failure_reports_missing_previous_evidence_accurately(tmp_pat
     )
     assert degraded["last_successful_date"] is None
     assert degraded["impact"] == "no previous validated direction package is available"
+
+
+def test_numeric_update_preserves_previous_analysis_as_stale_fallback(tmp_path: Path) -> None:
+    from market_evidence.analysis_publisher import publish_candidate
+    from scripts.update_market_data import update_public_tree
+    from tests.test_ai_candidate import valid_candidate
+
+    destination = tmp_path / "public"
+    first_now = datetime(2026, 7, 15, 12, 30, tzinfo=timezone.utc)
+    update_public_tree(destination, now=first_now, fixture_mode=True)
+    candidate = valid_candidate(destination)
+    candidate_path = tmp_path / "ai-inbox" / "2026-07-15.json"
+    candidate_path.parent.mkdir(parents=True, exist_ok=True)
+    candidate_path.write_text(json.dumps(candidate, ensure_ascii=False), encoding="utf-8")
+    publish_candidate(candidate_path, destination, published_at=first_now)
+    previous_manifest = load_json(destination / "manifest.json")
+    previous_analysis = previous_manifest["analysis"]
+
+    update_public_tree(
+        destination,
+        now=datetime(2026, 7, 16, 12, 30, tzinfo=timezone.utc),
+        fixture_mode=True,
+    )
+
+    current_manifest = load_json(destination / "manifest.json")
+    assert current_manifest["analysis"] is None
+    assert current_manifest["analysis_fallback"] == previous_analysis
+    assert current_manifest["analysis_fallback"]["evidence_version"] != current_manifest["evidence_version"]
+    assert (destination / current_manifest["analysis_fallback"]["package_path"]).is_file()
+    assert load_json(destination / "market-analysis-latest.json") == load_json(
+        destination / current_manifest["analysis_fallback"]["package_path"]
+    )
+
+
+def test_same_evidence_refresh_keeps_current_analysis_current(tmp_path: Path) -> None:
+    from market_evidence.analysis_publisher import publish_candidate
+    from scripts.update_market_data import update_public_tree
+    from tests.test_ai_candidate import valid_candidate
+
+    destination = tmp_path / "public"
+    now = datetime(2026, 7, 15, 12, 30, tzinfo=timezone.utc)
+    update_public_tree(destination, now=now, fixture_mode=True)
+    candidate_path = tmp_path / "ai-inbox" / "2026-07-15.json"
+    candidate_path.parent.mkdir(parents=True, exist_ok=True)
+    candidate_path.write_text(
+        json.dumps(valid_candidate(destination), ensure_ascii=False),
+        encoding="utf-8",
+    )
+    publish_candidate(candidate_path, destination, published_at=now)
+    published_analysis = load_json(destination / "manifest.json")["analysis"]
+
+    update_public_tree(destination, now=now, fixture_mode=True)
+
+    refreshed_manifest = load_json(destination / "manifest.json")
+    assert refreshed_manifest["analysis"] == published_analysis
+    assert refreshed_manifest["analysis_fallback"] is None
+
+
+def test_public_tree_rejects_stale_analysis_fallback_with_wrong_hash(tmp_path: Path) -> None:
+    import pytest
+
+    from market_evidence.analysis_publisher import publish_candidate
+    from market_evidence.package_builder import canonical_json_bytes
+    from market_evidence.publication import PublicationError, validate_public_tree
+    from scripts.update_market_data import update_public_tree
+    from tests.test_ai_candidate import valid_candidate
+
+    destination = tmp_path / "public"
+    first_now = datetime(2026, 7, 15, 12, 30, tzinfo=timezone.utc)
+    update_public_tree(destination, now=first_now, fixture_mode=True)
+    candidate_path = tmp_path / "ai-inbox" / "2026-07-15.json"
+    candidate_path.parent.mkdir(parents=True, exist_ok=True)
+    candidate_path.write_text(
+        json.dumps(valid_candidate(destination), ensure_ascii=False),
+        encoding="utf-8",
+    )
+    publish_candidate(candidate_path, destination, published_at=first_now)
+    update_public_tree(
+        destination,
+        now=datetime(2026, 7, 16, 12, 30, tzinfo=timezone.utc),
+        fixture_mode=True,
+    )
+    manifest = load_json(destination / "manifest.json")
+    manifest["analysis_fallback"]["sha256"] = "f" * 64
+    (destination / "manifest.json").write_bytes(canonical_json_bytes(manifest) + b"\n")
+
+    with pytest.raises(PublicationError, match="fallback analysis hash mismatch"):
+        validate_public_tree(destination)
+
+
+def test_public_tree_rejects_analysis_path_bound_to_wrong_version(tmp_path: Path) -> None:
+    import pytest
+
+    from market_evidence.analysis_publisher import publish_candidate
+    from market_evidence.package_builder import canonical_json_bytes
+    from market_evidence.publication import PublicationError, validate_public_tree
+    from scripts.update_market_data import update_public_tree
+    from tests.test_ai_candidate import valid_candidate
+
+    destination = tmp_path / "public"
+    first_now = datetime(2026, 7, 15, 12, 30, tzinfo=timezone.utc)
+    update_public_tree(destination, now=first_now, fixture_mode=True)
+    candidate_path = tmp_path / "ai-inbox" / "2026-07-15.json"
+    candidate_path.parent.mkdir(parents=True, exist_ok=True)
+    candidate_path.write_text(
+        json.dumps(valid_candidate(destination), ensure_ascii=False),
+        encoding="utf-8",
+    )
+    publish_candidate(candidate_path, destination, published_at=first_now)
+    update_public_tree(
+        destination,
+        now=datetime(2026, 7, 16, 12, 30, tzinfo=timezone.utc),
+        fixture_mode=True,
+    )
+    manifest = load_json(destination / "manifest.json")
+    entry = manifest["analysis_fallback"]
+    wrong_path = "versions/2026-07-14.ffffffffffff/market-analysis.json"
+    wrong_file = destination / wrong_path
+    wrong_file.parent.mkdir(parents=True, exist_ok=True)
+    wrong_file.write_bytes((destination / entry["package_path"]).read_bytes())
+    entry["package_path"] = wrong_path
+    (destination / "manifest.json").write_bytes(canonical_json_bytes(manifest) + b"\n")
+
+    with pytest.raises(PublicationError, match="path.*evidence version"):
+        validate_public_tree(destination)

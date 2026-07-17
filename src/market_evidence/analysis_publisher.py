@@ -97,6 +97,7 @@ def publish_candidate(
             "sha256": sha256_hex(analysis),
             "evidence_version": evidence_version,
         }
+        manifest["analysis_fallback"] = None
         _write_json(staged_root / "manifest.json", manifest)
         _write_json(staged_root / "versions" / evidence_version / "manifest.json", manifest)
 

@@ -151,6 +151,15 @@ def write_built_tree(
         write_json(version_root / "categories" / f"{category['category_id']}.json", category)
 
     manifest = built["manifest"]
+    if previous_manifest:
+        previous_analysis = previous_manifest.get("analysis") or previous_manifest.get(
+            "analysis_fallback"
+        )
+        if previous_analysis:
+            if previous_analysis.get("evidence_version") == manifest["evidence_version"]:
+                manifest["analysis"] = previous_analysis
+            else:
+                manifest["analysis_fallback"] = previous_analysis
     for category_entry, category in zip(manifest["categories"], categories):
         category_entry["sha256"] = sha256_hex(category)
     if failed_direction_ids:

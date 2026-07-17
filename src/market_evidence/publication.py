@@ -33,6 +33,33 @@ def resolve_public_path(root: Path, relative_path: str) -> Path:
     return candidate
 
 
+def _validate_analysis_entry(
+    root: Path,
+    manifest: dict[str, Any],
+    entry: dict[str, Any],
+    *,
+    fallback: bool,
+) -> dict[str, Any]:
+    label = "fallback analysis" if fallback else "analysis"
+    expected_path = f"versions/{entry['evidence_version']}/market-analysis.json"
+    if entry["package_path"] != expected_path:
+        raise PublicationError(f"{label} path does not match evidence version")
+    analysis_path = resolve_public_path(root, entry["package_path"])
+    analysis = load_json(analysis_path)
+    if sha256_hex(analysis) != entry["sha256"]:
+        raise PublicationError(f"{label} hash mismatch")
+    if analysis["evidence_version"] != entry["evidence_version"]:
+        raise PublicationError(f"{label} entry evidence version mismatch")
+    if analysis["analysis_date"] != entry["analysis_as_of"]:
+        raise PublicationError(f"{label} date mismatch")
+    if fallback and entry["evidence_version"] == manifest["evidence_version"]:
+        raise PublicationError("fallback analysis must reference an older evidence version")
+    if not fallback and entry["evidence_version"] != manifest["evidence_version"]:
+        raise PublicationError("analysis evidence version mismatch")
+    validate_document("market-analysis", analysis)
+    return analysis
+
+
 def validate_public_tree(root: Path) -> dict[str, Any]:
     root = root.resolve()
     manifest_path = root / "manifest.json"
@@ -41,17 +68,20 @@ def validate_public_tree(root: Path) -> dict[str, Any]:
     manifest = load_json(manifest_path)
     try:
         validate_document("market-data-manifest", manifest)
-        if manifest["analysis"] is not None:
-            analysis_entry = manifest["analysis"]
-            analysis_path = resolve_public_path(root, analysis_entry["package_path"])
-            analysis = load_json(analysis_path)
-            if sha256_hex(analysis) != analysis_entry["sha256"]:
-                raise PublicationError("analysis hash mismatch")
-            if analysis["evidence_version"] != manifest["evidence_version"]:
-                raise PublicationError("analysis evidence version mismatch")
-            validate_document("market-analysis", analysis)
+        analysis_entry = manifest["analysis"]
+        fallback_entry = manifest.get("analysis_fallback")
+        if analysis_entry is not None and fallback_entry is not None:
+            raise PublicationError("manifest cannot publish current and fallback analysis together")
+        selected_analysis_entry = analysis_entry or fallback_entry
+        if selected_analysis_entry is not None:
+            _validate_analysis_entry(
+                root,
+                manifest,
+                selected_analysis_entry,
+                fallback=analysis_entry is None,
+            )
             latest_analysis = load_json(root / "market-analysis-latest.json")
-            if sha256_hex(latest_analysis) != analysis_entry["sha256"]:
+            if sha256_hex(latest_analysis) != selected_analysis_entry["sha256"]:
                 raise PublicationError("latest analysis does not match versioned analysis")
         for category_entry in manifest["categories"]:
             category_path = resolve_public_path(root, category_entry["package_path"])

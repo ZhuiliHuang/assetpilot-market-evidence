@@ -67,3 +67,38 @@ def test_invalid_candidate_leaves_previous_analysis_unchanged(public_tree: Path,
     after_analysis = load_json(public_tree / after_manifest["analysis"]["package_path"])
     assert sha256_hex(after_manifest) == sha256_hex(before_manifest)
     assert sha256_hex(after_analysis) == sha256_hex(before_analysis)
+
+
+def test_fresh_candidate_replaces_stale_fallback(public_tree: Path, tmp_path: Path) -> None:
+    from market_evidence.analysis_publisher import publish_candidate
+    from scripts.update_market_data import update_public_tree
+
+    first_path = write_candidate(tmp_path, valid_candidate(public_tree))
+    publish_candidate(first_path, public_tree, published_at=NOW)
+    update_public_tree(
+        public_tree,
+        now=datetime(2026, 7, 16, 12, 30, tzinfo=timezone.utc),
+        fixture_mode=True,
+    )
+    stale_manifest = load_json(public_tree / "manifest.json")
+    assert stale_manifest["analysis"] is None
+    assert stale_manifest["analysis_fallback"] is not None
+
+    candidate = valid_candidate(public_tree)
+    candidate.update(
+        candidate_version="2026-07-16.aaaaaaaa",
+        analysis_date="2026-07-16",
+        generated_at="2026-07-16T14:00:00Z",
+    )
+    candidate_path = tmp_path / "ai-inbox" / "2026-07-16.json"
+    candidate_path.write_text(json.dumps(candidate, ensure_ascii=False), encoding="utf-8")
+    analysis = publish_candidate(
+        candidate_path,
+        public_tree,
+        published_at=datetime(2026, 7, 16, 14, 5, tzinfo=timezone.utc),
+    )
+
+    current_manifest = load_json(public_tree / "manifest.json")
+    assert current_manifest["analysis_fallback"] is None
+    assert current_manifest["analysis"]["evidence_version"] == current_manifest["evidence_version"]
+    assert load_json(public_tree / "market-analysis-latest.json") == analysis

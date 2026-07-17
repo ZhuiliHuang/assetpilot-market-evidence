@@ -2,6 +2,7 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .venv/
+.worktrees/
 build/
 dist/
 *.egg-info/
@@ -9,4 +10,3 @@ dist/
 htmlcov/
 .DS_Store
 Thumbs.db
-

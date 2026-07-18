@@ -49,4 +49,7 @@ def test_market_update_runs_live_on_weekdays_and_keeps_manual_fixture_mode() -> 
     assert "github.event_name == 'schedule' || inputs.publish" in workflow
     assert "ref: data" in workflow
     assert "path: previous-data" in workflow
+    assert "fetch-depth: 0" in workflow
     assert 'cp -R previous-data/public/. "$RUNNER_TEMP/public/"' in workflow
+    assert "recover_stale_analysis.py" in workflow
+    assert "public/market-analysis-latest.json" in workflow

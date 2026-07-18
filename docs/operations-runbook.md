@@ -49,6 +49,7 @@ The intended weekday schedule is `20:30 Asia/Shanghai`. GitHub cron uses UTC, so
 - Prefer another approved public source only when its license and schema mapping are already registered.
 - Never repair a cloud failure by adding Wind data, secrets, personal context, or unreviewed files.
 - If numeric evidence advances while AI review fails, keep the prior analysis with its original date, hash, and evidence version; label it stale/review-only and do not use it to raise an action level.
+- If both analysis references are absent because of the pre-2026-07-18 publication defect, the numeric workflow may recover only the newest analysis still present in protected `data` history. It must validate the complete historical tree, preserve the original evidence version/date/hash, and publish it only as a stale fallback when the current evidence version differs. A tampered or incomplete historical tree must fail without changing the current package.
 
 ## Acceptance record
 

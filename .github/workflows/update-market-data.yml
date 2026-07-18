@@ -40,6 +40,7 @@ jobs:
           ref: data
           path: previous-data
           persist-credentials: false
+          fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -55,6 +56,27 @@ jobs:
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/public"
           cp -R previous-data/public/. "$RUNNER_TEMP/public/"
+      - name: Recover the latest validated historical analysis when its reference is missing
+        shell: bash
+        run: |
+          set -euo pipefail
+          recovery_commit=""
+          while read -r candidate_commit; do
+            if git -C previous-data cat-file -e "$candidate_commit:public/market-analysis-latest.json" 2>/dev/null; then
+              recovery_commit="$candidate_commit"
+              break
+            fi
+          done < <(git -C previous-data log --format=%H -- public/market-analysis-latest.json)
+          if [[ -z "$recovery_commit" ]]; then
+            echo "No historical validated analysis is available"
+            exit 0
+          fi
+          mkdir -p "$RUNNER_TEMP/historical-data"
+          git -C previous-data archive "$recovery_commit" public \
+            | tar -xf - -C "$RUNNER_TEMP/historical-data"
+          python scripts/recover_stale_analysis.py \
+            --current-root "$RUNNER_TEMP/public" \
+            --historical-root "$RUNNER_TEMP/historical-data/public"
       - name: Build validated evidence in an isolated directory
         shell: bash
         run: |
